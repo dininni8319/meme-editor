@@ -21,7 +21,71 @@ body {
   padding-bottom: 5px;
 }
 
+.icon-nav-expand {
+  width: 50px;
+  height: 50px;
+  padding: 7px;
+  border-radius: 5px;
+  background-color: #22233E;
+}
+
+.uploads-image { 
+  width: 12rem;
+  height: 5rem;
+}
+
+.uploads-image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .text-gray {
   color: #A0A5D0
 }
-  
+
+label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #A0A5D0;
+}
+ 
+input {
+  outline: none;
+  cursor: pointer;
+}
+/* Hide the default file input */
+input[type="file"] {
+  display: none;
+}
+
+.custom-scrollbar {
+
+  /* Set overflow property to enable scrolling */
+  overflow: auto;
+
+  /* Customize scrollbar colors */
+  scrollbar-color: #a7c0ead8;
+  scrollbar-width: thin;
+  /* Customize scrollbar track */
+  scrollbar-track-color: #e2e8f0;
+
+  /* Customize scrollbar thumb */
+  scrollbar-thumb-color: #A0A5D0;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  /* Set width and height for the scrollbar */
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  /* Customize the appearance of the scrollbar thumb */
+  background-color: #A0A5D0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  /* Customize the appearance of the scrollbar track */
+  background-color: #141629;
+}

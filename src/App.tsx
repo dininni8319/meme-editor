@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { fabric } from 'fabric'
-import Navbar from './components/navbar'
+import Navbar from './components/Navbar/navbar'
 
 const App = () => {
    useEffect(() => {
