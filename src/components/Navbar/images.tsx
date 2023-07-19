@@ -1,7 +1,11 @@
 import { images } from './assets-imports'
-import search from '../../assets/search.svg'
+import search from '@/assets/search.svg'
 
-const Images = ({ isExpanded }: { isExpanded: boolean } ) => {
+interface Props {
+  isExpanded: boolean
+}
+
+const Images = ({ isExpanded }: Props ) => {
   return (
     <div className='w-full'>
       <div className='flex items-center bg-[#22233E]'>

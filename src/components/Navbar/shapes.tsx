@@ -1,9 +1,14 @@
-interface IShapes {
+type Shapes = {
   id: number,
   src: string
 }
 
-const Shapes = ({ isExpanded, shapes }: { isExpanded: boolean, shapes: IShapes[]}) => {
+interface IProps {
+  isExpanded: boolean,
+  shapes: Shapes[]
+}
+
+const Shapes = ({ isExpanded, shapes }:IProps) => {
    return (
     <>
       {isExpanded && shapes?.map(({ id, src }) => {

@@ -1,24 +1,25 @@
 import { useState, useEffect } from 'react'
-import logo from '../../assets/logo.svg'
-import uploads from '../../assets/uploads.svg'
-import imageSVG from '../../assets/image.svg'
-import text from '../../assets/text.svg'
-import audio from '../../assets/audio.svg'
-import video from "../../assets/video.svg";
-import objects from '../../assets/shape.svg'
-import collapse from '../../assets/collapse.svg'
+import logo from '@/assets/logo.svg'
+import uploads from '@/assets/uploads.svg'
+import imageSVG from '@/assets/image.svg'
+import text from '@/assets/text.svg'
+import audio from '@/assets/audio.svg'
+import video from "@/assets/video.svg";
+import objects from '@/assets/shape.svg'
+import collapse from '@/assets/collapse.svg'
 import { emojis, shapes } from './assets-imports';
 import Shapes from './shapes'
 import Emojis from './emojis'
 import Uploads from './upoads'
 import Images from './images'
-
+import { access_key, secret_key } from '@/utils/'
 
 const Navbar = () => {
   const [ isExpanded, setIsExpanded ] = useState(false)
   const [ navbarSection, setNavbarSection ] = useState<string | undefined>('')
   const [ images, setImages ] = useState<string[] | []>([])
-  
+  const [imageUpload , setImageUpload ] = useState<string[] | []>([]) 
+
   const toggleSideBar = (str: string) => {
     setNavbarSection(str)
     setIsExpanded(!isExpanded)
@@ -31,14 +32,15 @@ const Navbar = () => {
       const arr: string[] = []
       const fileUrl = URL.createObjectURL(file[0])
       arr.push(fileUrl)
-      setImages((prev: string[] | []) =>  arr.concat(prev))
+      setImageUpload((prev: string[] | []) =>  arr.concat(prev))
     }
   }
 // https://api.unsplash.com/search/photos?query=minimal
   useEffect(() => {
     const fetchImages = async () => {
       const res = await fetch('https://picsum.photos/v2/list?page=2&limit=10')
-      const data = await res?.json()
+      const data: unknown  = await res.json()
+      
       const arr: string[] = []
       data?.map(({download_url}: {download_url: string}) => {
         arr.push(download_url)
@@ -99,7 +101,7 @@ const Navbar = () => {
              {navbarSection === 'uploads' && (
                 <Uploads 
                   isExpanded={isExpanded}
-                  images={images}
+                  images={imageUpload}
                   handleImages={handleImages}
                 />
              )}

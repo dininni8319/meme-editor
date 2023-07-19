@@ -1,11 +1,11 @@
-interface IUploads {
+interface IProps {
   isExpanded: boolean, 
   images: string[], 
-  handleImages: () => void
+  handleImages: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Uploads = (
-  { isExpanded, images, handleImages }: IUploads
+  { isExpanded, images, handleImages }: IProps
   ) => {
     return (
       <div className="w-full">
@@ -23,9 +23,9 @@ const Uploads = (
             </div>
         )}
 
-      {isExpanded && images?.map((image: string) => {
+      {isExpanded && images?.map((image: string, id: number) => {
         return (
-          <div className='w-full flex flex-col items-center uploads-image mb-4'>
+          <div key={id} className='w-full flex flex-col items-center uploads-image mb-4'>
             <img className='ps-10 mt-5 uploads-image' src={image} />
           </div>
         )
