@@ -1,19 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { useState, useEffect } from 'react'
-import logo from '@/assets/logo.svg'
-import uploads from '@/assets/uploads.svg'
-import imageSVG from '@/assets/image.svg'
-import text from '@/assets/text.svg'
-import audio from '@/assets/audio.svg'
-import video from "@/assets/video.svg";
-import objects from '@/assets/shape.svg'
 import collapse from '@/assets/collapse.svg'
-import { emojis, shapes } from './assets-imports';
+import { emojis, shapes, audios } from './assets-imports';
+import NavigationList from './navigation-list';
 import Shapes from './shapes'
 import Emojis from './emojis'
 import Uploads from './upoads'
 import Images from './images'
 import { access_key } from '@/utils/'
+import Audio from './audio';
 
 interface IError {
   message: string
@@ -26,7 +21,6 @@ const Navbar = () => {
   const [ imageUpload , setImageUpload ] = useState<string[] | []>([]) 
   const [ error, setError] = useState('')
   const [ query, setQuery] = useState('')
-
   const toggleSideBar = (str: string) => {
     setNavbarSection(str)
     if (!isExpanded) {
@@ -74,49 +68,15 @@ const Navbar = () => {
 
   return (
     <div className='flex w-full'>
-      <div className="w-20">
-        <div className="flex flex-col items-center py-5">
-          <img src={logo} alt="logo" />
-        </div>
-        <ul className='text-sm text-gray'>
-          <li className='flex flex-col items-center py-5' onClick={() => toggleSideBar('uploads')}>
-            <img className='icon-nav' src={uploads} alt="logo icon" />
-            <span>Uploads</span>
-          </li>
-          <li className='flex flex-col items-center py-5' onClick={() => toggleSideBar('objects')}>
-            <img className='icon-nav' src={objects} alt="uploads icon"/>
-            <span>Objects</span>
-          </li>
-          <li className='flex flex-col items-center py-5' onClick={() => toggleSideBar('image')}>
-            <img className='icon-nav' src={imageSVG} alt="image icon"/>
-            <span>Images</span>
-          </li>
-          <li className='flex flex-col items-center py-5' onClick={() => toggleSideBar('text')}>
-            <img className='icon-nav' src={text} alt="text icon"/>
-            <span>Text</span>
-          </li>
-          <li className='flex flex-col items-center py-5' onClick={() => toggleSideBar('video')}>
-            <img className='icon-nav' src={video} alt="video icon"/>
-            <span>
-              Videos
-            </span>
-          </li>
-          <li className='flex flex-col items-center py-5' onClick={() => toggleSideBar('audio')}>
-            <img className='icon-nav' src={audio} alt="audio icon"/>
-            <span>
-              Audio
-            </span>
-          </li>
-        </ul>
-      </div>
-      <div className={isExpanded ? `absolute bg-[#141629] w-60 h-full left-[7%] z-50 flex flex-col` : ""}>
+      <NavigationList toggleSideBar={toggleSideBar} />
+      <div className={isExpanded ? `absolute bg-[#141629] w-64 h-full left-[7%] z-50 flex flex-col` : ""}>
           <div className='flex items-center justify-between py-2 px-1'>
             <span className={isExpanded ? 'text-white capitalize text-xl' : "hidden"}>{navbarSection}</span>
             <button onClick={() => setIsExpanded(prev => prev = false)} className={isExpanded ? 'text-2xl pe-2 pt-3' : 'hidden'}>
               <img className='icon-nav' src={collapse} alt="collapse icon"/>
             </button>
           </div>
-          <div className={navbarSection !== 'uploads'? 'grid grid-cols-4 gap-2 overflow-y-scroll custom-scrollbar' :"w-full"}>
+          <div className={navbarSection !== 'uploads' && navbarSection !== 'audio' ? 'grid grid-cols-4 gap-2 overflow-y-scroll custom-scrollbar h-3/6 relative top-[3%]' :"w-full"}>
              {navbarSection === 'objects' && <Shapes isExpanded={isExpanded} shapes={shapes} />}
              {navbarSection === 'objects' && <Emojis isExpanded={isExpanded} emojis={emojis} />}
              {navbarSection === 'image' && ( 
@@ -134,6 +94,7 @@ const Navbar = () => {
                   handleImages={handleImages}
                 />
              )}
+             {navbarSection === 'audio' && <Audio isExpanded={isExpanded} audios={audios} />}
           </div>
       </div>
     </div>

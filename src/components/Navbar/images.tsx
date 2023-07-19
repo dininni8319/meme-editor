@@ -1,6 +1,7 @@
 import { img } from './assets-imports'
 import search from '@/assets/search.svg'
 import SearchAutoComplete from './search-img-auto-com'
+import memoizeOne from 'memoize-one'
 
 interface Props {
   isExpanded: boolean,
@@ -9,13 +10,22 @@ interface Props {
   handleCloseSearchBar: () => void
 }
 
+const renderImages = memoizeOne(() => img?.map(({id, src}: {id: number, src: string}) => {
+    return (
+      <div key={id} id={String(id)} className='w-full flex flex-col items-center uploads-image mb-4'>
+        <img className='ps-10 mt-5 uploads-image' src={src} loading='lazy' />
+      </div>
+    )
+  })
+)
+
 const Images = ({ isExpanded, setQuery, images, handleCloseSearchBar }: Props ) => {
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target 
     if (value.length >= 3) {
       setQuery((prev: string) => prev = value)
     }
-  }
+}
 
   return (
     <div className={isExpanded ? "w-full" : 'hidden'}>
@@ -35,13 +45,7 @@ const Images = ({ isExpanded, setQuery, images, handleCloseSearchBar }: Props ) 
           images={images}
         />
       </div>
-      {isExpanded && img?.slice(0,5).map(({id, src}: {id: number, src: string}) => {
-        return (
-          <div key={id} id={String(id)} className='w-full flex flex-col items-center uploads-image mb-4'>
-            <img className='ps-10 mt-5 uploads-image' src={src} />
-          </div>
-        )
-      })}
+      {renderImages()}
     </div>
   )
 }

@@ -9,6 +9,17 @@ export const shapes = [
   { id: 8, src: "/src/assets/shapes/triangle.svg" },
 ]
 
+export const audios = [
+  { id: 1,srcAudio: '/src/assets/audio/both-of-us.mp3', srcImg: "/src/assets/audio/both-of-us-thumb.png" },
+  { id: 2,srcAudio: '/src/assets/audio/epic-cinematic-trailer.mp3', srcImg: "/src/assets/audio/epic-cinematic-trailer-thumb.png"},
+  { id: 3,srcAudio: '/src/assets/audio/everything-feels-new.mp3', srcImg: "/src/assets/audio/everything-feels-new-thumb.png"},
+  { id: 4,srcAudio: '/src/assets/audio/inspirational-background.mp3', srcImg: "/src/assets/audio/inspirational-background-thumb.png"},
+  { id: 5,srcAudio: '/src/assets/audio/lofi.mp3', srcImg: "/src/assets/audio/lofi-thumb.png" },
+  { id: 6,srcAudio: '/src/assets/audio/stomping-rock.mp3', srcImg: "/src/assets/audio/stomping-rock.mp3" },
+  { id: 7,srcAudio: '/src/assets/audio/the-podcast-intro.mp3', srcImg: "/src/assets/audio/the-podcast-intro-thumb.png" },
+  { id: 8,srcAudio: '/src/assets/audio/tropical-summer-music.mp3', srcImg: "/src/assets/audio/tropical-summer-music-thumb.png" },
+]
+
 export const img = [
   { id: 1, src: "/src/assets/images/image1.avif" },
   { id: 2, src: "/src/assets/images/image2.avif"},
