@@ -60,16 +60,13 @@ input[type="file"] {
 }
 
 .custom-scrollbar {
-
   /* Set overflow property to enable scrolling */
   overflow: auto;
-
   /* Customize scrollbar colors */
   scrollbar-color: #a7c0ead8;
   scrollbar-width: thin;
   /* Customize scrollbar track */
   scrollbar-track-color: #e2e8f0;
-
   /* Customize scrollbar thumb */
   scrollbar-thumb-color: #A0A5D0;
 }

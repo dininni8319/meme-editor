@@ -9,7 +9,7 @@ export const shapes = [
   { id: 8, src: "/src/assets/shapes/triangle.svg" },
 ]
 
-export const images = [
+export const img = [
   { id: 1, src: "/src/assets/images/image1.avif" },
   { id: 2, src: "/src/assets/images/image2.avif"},
   { id: 3, src: "/src/assets/images/image3.avif"},

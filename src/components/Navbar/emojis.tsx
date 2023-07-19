@@ -1,9 +1,11 @@
+import memoizeOne from 'memoize-one'
+
 interface IEmojis {
   id: number,
   src: string
 }
 
-const Emojis = ({isExpanded, emojis}: {isExpanded: boolean, emojis: IEmojis[]}) => {
+const Emojis = memoizeOne(({isExpanded, emojis}: {isExpanded: boolean, emojis: IEmojis[]}) => {
   return (
     <>
       {isExpanded && emojis?.map(({id, src }) => {
@@ -11,6 +13,6 @@ const Emojis = ({isExpanded, emojis}: {isExpanded: boolean, emojis: IEmojis[]}) 
       })}
     </>
   ) 
-}
+})
 
 export default Emojis
