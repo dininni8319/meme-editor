@@ -14,7 +14,7 @@ interface Props {
 const Audio = ({ isExpanded, audios }: Props) => {
 
   return (
-     <div className='flex flex-col justify-center'>
+     <div className='flex flex-col justify-center mt-10'>
       {isExpanded && audios?.map(({id, srcAudio, srcImg }) => {
         return (
           <div key={id} className='audio-container'>

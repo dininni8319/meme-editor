@@ -1,3 +1,5 @@
+import uploadIcon from '@/assets/upload.svg'
+
 interface IProps {
   isExpanded: boolean, 
   images: string[], 
@@ -10,15 +12,16 @@ const Uploads = (
     return (
       <div className="w-full">
         {isExpanded && ( 
-            <div className="flex justify-center">
-              <label className='bg-blue-500 text-white w-full p-5'>
+            <div className="flex justify-center mt-10 me-5">
+              <label className='bg-blue-500 text-white w-full p-5 first-letter flex justify-center'>
                 <input 
                   type="file"  
                   accept=".jpg,.jpeg,.png,.gif"  
                   id="media"
                   onChange={handleImages} 
                 />
-                Choose an Image
+                <img src={uploadIcon} alt="upload icon" className='pe-2' />
+               <span className='text-xl'>Upload a file</span> 
               </label>
             </div>
         )}

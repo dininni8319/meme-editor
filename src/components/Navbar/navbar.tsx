@@ -9,26 +9,33 @@ import Uploads from './upoads'
 import Images from './images'
 import { access_key } from '@/utils/'
 import Audio from './audio';
-
-interface IError {
-  message: string
-}
+import Text from './text';
 
 const Navbar = () => {
   const [ isExpanded, setIsExpanded ] = useState(false)
-  const [ navbarSection, setNavbarSection ] = useState<string | undefined>('')
+  const [ activeTab, setActiveTab ] = useState<string | undefined>('')
   const [ images, setImages ] = useState<[]>([])
   const [ imageUpload , setImageUpload ] = useState<string[] | []>([]) 
   const [ error, setError] = useState('')
   const [ query, setQuery] = useState('')
-  const toggleSideBar = (str: string) => {
-    setNavbarSection(str)
-    if (!isExpanded) {
-      setIsExpanded(prev => prev = true)
+
+  const handleCloseSearch = () => setImages([])
+  const show = activeTab !== 'uploads' &&
+               activeTab !== 'audio' && 
+               activeTab !== 'text' &&
+               activeTab !== 'video'
+
+  const handleTabClick = (tab: string) => {
+    if (tab === activeTab) {
+      setIsExpanded(false)
+      setActiveTab('')
+    }
+    else {
+      setIsExpanded(true)
+      setActiveTab(tab)
     }
   }
 
-  const handleCloseSearchBar = () => setImages(prev => prev = [])
 
   const handleImages = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files
@@ -68,33 +75,34 @@ const Navbar = () => {
 
   return (
     <div className='flex w-full'>
-      <NavigationList toggleSideBar={toggleSideBar} />
+      <NavigationList handleTabClick={handleTabClick} />
       <div className={isExpanded ? `absolute bg-[#141629] w-64 h-full left-[7%] z-50 flex flex-col` : ""}>
           <div className='flex items-center justify-between py-2 px-1'>
-            <span className={isExpanded ? 'text-white capitalize text-xl' : "hidden"}>{navbarSection}</span>
+            <span className={isExpanded ? 'text-white capitalize text-xl' : "hidden"}>{activeTab}</span>
             <button onClick={() => setIsExpanded(prev => prev = false)} className={isExpanded ? 'text-2xl pe-2 pt-3' : 'hidden'}>
               <img className='icon-nav' src={collapse} alt="collapse icon"/>
             </button>
           </div>
-          <div className={navbarSection !== 'uploads' && navbarSection !== 'audio' ? 'grid grid-cols-4 gap-2 overflow-y-scroll custom-scrollbar h-3/6 relative top-[3%]' :"w-full"}>
-             {navbarSection === 'objects' && <Shapes isExpanded={isExpanded} shapes={shapes} />}
-             {navbarSection === 'objects' && <Emojis isExpanded={isExpanded} emojis={emojis} />}
-             {navbarSection === 'image' && ( 
+          <div className={show ? 'grid grid-cols-4 gap-2 overflow-y-scroll custom-scrollbar h-3/6 relative top-[3%]' : "w-full"}>
+             {activeTab === 'objects' && <Shapes isExpanded={isExpanded} shapes={shapes} />}
+             {activeTab === 'objects' && <Emojis isExpanded={isExpanded} emojis={emojis} />}
+             {activeTab === 'image' && ( 
                 <Images 
                   isExpanded={isExpanded} 
                   setQuery={setQuery} 
                   images={images} 
-                  handleCloseSearchBar={handleCloseSearchBar}
+                  handleCloseSearch={handleCloseSearch}
                 />
               )}
-             {navbarSection === 'uploads' && (
+             {activeTab === 'uploads' && (
                 <Uploads 
                   isExpanded={isExpanded}
                   images={imageUpload}
                   handleImages={handleImages}
                 />
              )}
-             {navbarSection === 'audio' && <Audio isExpanded={isExpanded} audios={audios} />}
+             {activeTab === 'text' && <Text isExpanded={isExpanded} />}
+             {activeTab === 'audio' && <Audio isExpanded={isExpanded} audios={audios} />}
           </div>
       </div>
     </div>

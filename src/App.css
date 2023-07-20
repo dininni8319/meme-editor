@@ -86,3 +86,11 @@ input[type="file"] {
   /* Customize the appearance of the scrollbar track */
   background-color: #141629;
 }
+
+.text-element {
+  width: 15rem;
+  height: 2rem;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #A0A5D0;
+}

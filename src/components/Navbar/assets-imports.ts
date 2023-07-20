@@ -30,6 +30,14 @@ export const img = [
   { id: 7, src: "/src/assets/images/image7.avif" },
 ]
 
+export const texts = [
+      { id: 1, tag: "<h1>Add Text</h1>", fontSize: "40px"},
+      { id: 2, tag: "<h2>Add Text</h2>", fontSize: "35px"},
+      { id: 3, tag: "<h3>Add Text</h3>", fontSize: "30px"},
+      { id: 4, tag: "<h4>Add Text</h4>", fontSize: "25px"},
+      { id: 5, tag: "<h5>Add Text</h5>", fontSize: "20px"},
+      { id: 6, tag: "<h6>Add Text</h6>", fontSize: "15px"}
+    ]
 export const emojis = [
   { id: 1, src: "/src/assets/emojis/bomb-emoji.png" },
   { id: 2, src: "/src/assets/emojis/cat-face-emoji.png"},

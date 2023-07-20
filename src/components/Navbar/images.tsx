@@ -7,7 +7,7 @@ interface Props {
   isExpanded: boolean,
   images: string[]
   setQuery: React.Dispatch<React.SetStateAction<string>>
-  handleCloseSearchBar: () => void
+  handleCloseSearch: () => void
 }
 
 const renderImages = memoizeOne(() => img?.map(({id, src}: {id: number, src: string}) => {
@@ -19,7 +19,7 @@ const renderImages = memoizeOne(() => img?.map(({id, src}: {id: number, src: str
   })
 )
 
-const Images = ({ isExpanded, setQuery, images, handleCloseSearchBar }: Props ) => {
+const Images = ({ isExpanded, setQuery, images, handleCloseSearch }: Props ) => {
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target 
     if (value.length >= 3) {
@@ -29,16 +29,16 @@ const Images = ({ isExpanded, setQuery, images, handleCloseSearchBar }: Props ) 
 
   return (
     <div className={isExpanded ? "w-full" : 'hidden'}>
-      <div className='flex items-center bg-[#22233E]'>
+      <div className='flex items-center bg-[#22233E] mt-5'>
         <img className='icon-nav p-1' src={search} />
         <input 
           type="text" 
           name="query" 
           id="query" 
-          className='p-2 px-3 bg-[#22233E] text-[#A0A5D0]'
+          className='py-3 px-5 bg-[#22233E] text-[#A0A5D0]'
           placeholder='pixabay'
           onChange={handleChange}
-          onClick={handleCloseSearchBar}
+          onClick={handleCloseSearch}
          />
          <SearchAutoComplete
           isExpanded={isExpanded}
