@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import collapse from '@/assets/collapse.svg'
 import { emojis, shapes, audios } from './assets-imports';
-import NavigationList from './navigation-list';
+import NavigationTabs from './navigation-tabs';
 import Shapes from './shapes'
 import Emojis from './emojis'
 import Uploads from './upoads'
@@ -10,6 +10,7 @@ import Images from './images'
 import { access_key } from '@/utils/'
 import Audio from './audio';
 import Text from './text';
+import Video from './video';
 
 const Navbar = () => {
   const [ isExpanded, setIsExpanded ] = useState(false)
@@ -18,6 +19,8 @@ const Navbar = () => {
   const [ imageUpload , setImageUpload ] = useState<string[] | []>([]) 
   const [ error, setError] = useState('')
   const [ query, setQuery] = useState('')
+  const [ videoUpload, setVideoUpload ] = useState<string[] | []>([])
+  const [ audio, setAudio ] = useState([])
 
   const handleCloseSearch = () => setImages([])
   const show = activeTab !== 'uploads' &&
@@ -36,15 +39,24 @@ const Navbar = () => {
     }
   }
 
+  const handleFileString = (file: File):string[] => {
+    const arr: string[] = []
+    const fileUrl = URL.createObjectURL(file)
+    arr.push(fileUrl)
+    return arr
+  }
 
-  const handleImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event?.target?.files
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files[0]
 
-    if (file && file[0]) {
-      const arr: string[] = []
-      const fileUrl = URL.createObjectURL(file[0])
-      arr.push(fileUrl)
-      setImageUpload((prev: string[] | []) =>  arr.concat(prev))
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const arrOfFilesToString = handleFileString(file)
+        setImageUpload((prev: string[] | []) =>  arrOfFilesToString.concat(prev))
+      } else if (file.type.startsWith('video/')) {
+        const arrOfFilesToString = handleFileString(file)
+        setVideoUpload((prev: string[] | []) =>  arrOfFilesToString.concat(prev))
+      } 
     }
   }
 
@@ -75,7 +87,7 @@ const Navbar = () => {
 
   return (
     <div className='flex w-full'>
-      <NavigationList handleTabClick={handleTabClick} />
+      <NavigationTabs handleTabClick={handleTabClick} />
       <div className={isExpanded ? `absolute bg-[#141629] w-64 h-full left-[7%] z-50 flex flex-col` : ""}>
           <div className='flex items-center justify-between py-2 px-1'>
             <span className={isExpanded ? 'text-white capitalize text-xl' : "hidden"}>{activeTab}</span>
@@ -97,12 +109,14 @@ const Navbar = () => {
              {activeTab === 'uploads' && (
                 <Uploads 
                   isExpanded={isExpanded}
-                  images={imageUpload}
-                  handleImages={handleImages}
+                  imageUpload={imageUpload}
+                  handleFileUpload={handleFileUpload}
+                  videoUpload={videoUpload}
                 />
              )}
              {activeTab === 'text' && <Text isExpanded={isExpanded} />}
              {activeTab === 'audio' && <Audio isExpanded={isExpanded} audios={audios} />}
+             {activeTab === 'video' && <Video isExpanded={isExpanded} setQuery={setQuery} handleFileString={handleFileString} />}
           </div>
       </div>
     </div>

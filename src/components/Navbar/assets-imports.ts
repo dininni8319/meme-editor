@@ -20,6 +20,15 @@ export const audios = [
   { id: 8,srcAudio: '/src/assets/audio/tropical-summer-music.mp3', srcImg: "/src/assets/audio/tropical-summer-music-thumb.png" },
 ]
 
+export const assetVideos = [
+  { id: 1, src: "/src/assets/videos/cat-on-piano.mp4" },
+  { id: 2, src: "/src/assets/videos/dog.mp4"},
+  { id: 3, src: "/src/assets/videos/guy-at-gym.mp4"},
+  { id: 4, src: "/src/assets/videos/gym.mp4"},
+  { id: 5, src: "/src/assets/videos/man-with-dog.mp4" },
+  { id: 6, src: "/src/assets/videos/see.mp4" },
+]
+
 export const img = [
   { id: 1, src: "/src/assets/images/image1.avif" },
   { id: 2, src: "/src/assets/images/image2.avif"},

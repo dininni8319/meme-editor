@@ -20,3 +20,12 @@ const parent = document.querySelector('text-container')
     element.style.lineHeight = '1.5'
     element.style.textShadow = '2px 2px 2px black'
     parent?.appendChild(element)
+
+// write a function that gets all the videos inside the assets folder inside the video folder
+// compress them
+// then map through the array and display the videos
+// when the user clicks on the video, it should be displayed on the canvas
+// the user should be able to resize the video
+// the user should be able to move the video around the canvas
+// the user should be able to delete the video from the canvas
+// the user should be able to add more videos to the canvas

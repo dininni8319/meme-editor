@@ -10,7 +10,7 @@ interface Props {
   handleTabClick: (section: string) => void
 }
 
-const NavigationList = ({handleTabClick}: Props) => {
+const NavigationTabs = ({handleTabClick}: Props) => {
   return (
     <div className="w-20">
         <div className="flex flex-col items-center py-5">
@@ -50,4 +50,4 @@ const NavigationList = ({handleTabClick}: Props) => {
   )
 }
 
-export default NavigationList
+export default NavigationTabs
