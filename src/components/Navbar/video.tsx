@@ -26,7 +26,7 @@ const Video =  ({isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
   return (
     <div className={isExpanded ? "w-full" : 'hidden'}>
       <div className='flex flex-col bg-[#22233E] mt-5'>
-        <div className="flex items-center">
+        <div className="flex items-center border-2 border-gray-600">
           <img className='icon-nav p-1' src={search} />
           <input 
             type="text" 

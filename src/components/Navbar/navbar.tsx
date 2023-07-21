@@ -11,6 +11,9 @@ import { access_key, pexels_video } from '@/utils/'
 import Audio from './audio';
 import Text from './text';
 import Video from './video';
+import { NavbarState } from '../../store/navbarSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import { extended } from "../../store/navbarSlice";
 
 const Navbar = () => {
   const [ isExpanded, setIsExpanded ] = useState(false)
@@ -24,6 +27,12 @@ const Navbar = () => {
   const [ videoUpload, setVideoUpload ] = useState<string[] | []>([])
   const [ audio, setAudio ] = useState([])
   
+  // let { nav  } = useSelector<{nav: NavbarState}>((state) => state.nav)
+  // const isExpanded = nav?.isExpanded || false
+
+  console.log("🚀 ~ file: navbar.tsx:31 ~ Navbar ~ isExpanded:", isExpanded)
+  const dispatch = useDispatch()
+   
   const handleCloseSearch = () => setImages([])
   const handleCloseSearchVideo = () => setVideos([])
   const show = activeTab !== 'uploads' &&
@@ -33,7 +42,7 @@ const Navbar = () => {
 
   const handleTabClick = (tab: string) => {
     if (tab === activeTab) {
-      setIsExpanded(false)
+    setIsExpanded(false)
       setActiveTab('')
     }
     else {
@@ -124,7 +133,7 @@ const Navbar = () => {
       <div className={isExpanded ? `absolute bg-[#141629] w-64 h-4/6 md:h-5/6 left-[20%] md:left-[7%] z-50 flex flex-col ease-in duration-500` : ""}>
           <div className='flex items-center justify-between py-2 px-1'>
             <span className={isExpanded ? 'text-white capitalize text-xl' : "hidden"}>{activeTab}</span>
-            <button onClick={() => setIsExpanded(prev => prev = false)} className={isExpanded ? 'text-2xl pe-2 pt-3' : 'hidden'}>
+            <button onClick={() => setIsExpanded(false)} className={isExpanded ? 'text-2xl pe-2 pt-3' : 'hidden'}>
               <img className='icon-nav' src={collapse} alt="collapse icon"/>
             </button>
           </div>
