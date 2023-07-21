@@ -11,9 +11,12 @@ interface Props {
 }
 
 // memoization
-const renderIcon = (src: string) => {
+const renderIcon = (id: number, src: string) => {
   return  (
     <img 
+      id={id}
+      draggable="true"
+      onDragStart={dragElement}
       className='ps-10 mt-5 uploads-image' 
       src={src}  
       loading='lazy'
@@ -22,16 +25,21 @@ const renderIcon = (src: string) => {
 }
 
 const imgMemo = memoizeOne(renderIcon)
-
+// Handle drag start event for the drag item
+function dragElement(event: DragEvent) {
+      const target = event.target as HTMLElement
+  console.log("🚀 ~ file: images.tsx:30 ~ dragElement ~ target:", target.id)
+      
+  event?.dataTransfer?.setData("id", target.id )
+}
 // component for the images
 const renderImages = () => img?.map(({id, src}: {id: number, src: string}) => {
   return (
       <div key={id} id={String(id)} className='w-full flex flex-col items-center uploads-image mb-4'>
-        {imgMemo(src)}
+        {imgMemo(id,src)}
       </div>
     )
   })
-
 
 const Images = ({ isExpanded, setQuery, images, handleCloseSearch }: Props ) => {
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {

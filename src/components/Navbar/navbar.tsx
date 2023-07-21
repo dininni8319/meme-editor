@@ -30,9 +30,15 @@ const Navbar = () => {
   // let { nav  } = useSelector<{nav: NavbarState}>((state) => state.nav)
   // const isExpanded = nav?.isExpanded || false
 
-  console.log("🚀 ~ file: navbar.tsx:31 ~ Navbar ~ isExpanded:", isExpanded)
-  const dispatch = useDispatch()
+  // console.log("🚀 ~ file: navbar.tsx:31 ~ Navbar ~ isExpanded:", isExpanded)
+  // const dispatch = useDispatch()
    
+  const dragElement = (event: DragEvent): void => {
+    const target = event.target as HTMLElement
+    event?.dataTransfer?.setData("id", target.id)
+  }
+
+
   const handleCloseSearch = () => setImages([])
   const handleCloseSearchVideo = () => setVideos([])
   const show = activeTab !== 'uploads' &&
