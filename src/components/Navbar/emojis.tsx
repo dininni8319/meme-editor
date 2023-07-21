@@ -1,4 +1,3 @@
-import { memo } from 'react'
 
 interface IEmojis {
   id: number,
@@ -23,4 +22,4 @@ const Emojis = ({isExpanded, emojis}: {isExpanded: boolean, emojis: IEmojis[]}) 
   ) 
 }
 
-export default memo(Emojis)
+export default Emojis

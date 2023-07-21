@@ -44,14 +44,14 @@ const Uploads = (
       <div className='flex justify-around py-5'>
         {isExpanded && (
           <button 
-            className={initial || isImages ? 'border-b-2 border-blue-500 p-8' : 'text-[#A0A5D0] border-b-2 border-gray-500 p-8'}
+            className={initial || isImages ? 'border-b-2 border-blue-500 p-5' : 'text-[#A0A5D0] border-b-2 border-gray-500 p-5'}
             onClick={(() => handleTabUpload('images'))}>
               Images
           </button>
         )}
         {isExpanded && (
           <button 
-            className={ isVideos ? 'border-b-2 border-blue-500 p-8' : 'text-[#A0A5D0] border-b-2 border-gray-500 p-8'} 
+            className={ isVideos ? 'border-b-2 border-blue-500 p-5 me-2' : 'text-[#A0A5D0] border-b-2 border-gray-500 p-5 me-2'} 
             onClick={(() => handleTabUpload('videos'))}>
               Videos
             </button>

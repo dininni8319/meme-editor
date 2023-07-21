@@ -5,11 +5,11 @@ interface Props {
 
 const SearchAutoComplete = ({ isExpanded, images }: Props) => {
   return (
-    <div className={isExpanded && images.length !== 0 ? `absolute bg-white w-33 overflow-y-scroll shadow-2xl h-40 top-[12%] z-50 flex flex-col items-start p-1` : 'hidden'}>
+    <div className={isExpanded && images.length !== 0 ? `absolute bg-[#22233E] w-60 overflow-y-scroll custom-scrollbar shadow-2xl h-40 top-[25%] z-50 flex flex-col items-start p-1` : 'hidden'}>
         {isExpanded && images?.map((img, id) => {
         return (
           <div key={id} id={String(id)} className='flex flex-col items-center uploads-image mb-1'>
-            <img className='mt-1 uploads-image' src={img.urls.small} alt='images from a query' loading='lazy' />
+            <img className='mt-1 ps-5 uploads-image' src={img.urls.small} alt='images from a query' loading='lazy' />
           </div>
         )
       })}

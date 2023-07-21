@@ -30,12 +30,12 @@ const Images = ({ isExpanded, setQuery, images, handleCloseSearch }: Props ) => 
   return (
     <div className={isExpanded ? "w-full" : 'hidden'}>
       <div className='flex items-center bg-[#22233E] mt-5'>
-        <img className='icon-nav p-1' src={search} />
+        <img className='icon-nav p-1 me-2' src={search} />
         <input 
           type="text" 
           name="query" 
           id="query" 
-          className='py-3 px-5 bg-[#22233E] text-[#A0A5D0]'
+          className='py-4 px-5 bg-[#22233E] text-[#A0A5D0]'
           placeholder='pixabay'
           onChange={handleChange}
           onClick={handleCloseSearch}
