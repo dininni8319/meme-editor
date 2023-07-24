@@ -81,7 +81,6 @@ const Navbar = () => {
   useEffect(() => {
     const fetchImages = async () => {
       if (query.length > 0) {
-        
         try {
           const res = await fetch(`https://api.unsplash.com/search/photos?query=${query}`, 
             {

@@ -1,7 +1,6 @@
 import { img } from './assets-imports'
 import search from '@/assets/search.svg'
 import SearchAutoComplete from './search-img-auto-com'
-import memoizeOne from 'memoize-one'
 
 interface Props {
   isExpanded: boolean,
@@ -12,34 +11,32 @@ interface Props {
 
 // memoization
 const renderIcon = (id: number, src: string) => {
-  return  (
+  const handleDragStart = (event: React.DragEvent<HTMLImageElement>) => {
+    console.log(src, 'testing');
+    
+    event.dataTransfer.setData('image-url', src)
+  }
+
+  return (
     <img 
-      id={id}
-      draggable="true"
-      onDragStart={dragElement}
+      id={String(id)}
+      draggable
       className='ps-10 mt-5 uploads-image' 
       src={src}  
       loading='lazy'
+      onDragStart={handleDragStart}
     />
   )
 }
 
-const imgMemo = memoizeOne(renderIcon)
-// Handle drag start event for the drag item
-function dragElement(event: DragEvent) {
-      const target = event.target as HTMLElement
-  console.log("🚀 ~ file: images.tsx:30 ~ dragElement ~ target:", target.id)
-      
-  event?.dataTransfer?.setData("id", target.id )
-}
 // component for the images
 const renderImages = () => img?.map(({id, src}: {id: number, src: string}) => {
   return (
-      <div key={id} id={String(id)} className='w-full flex flex-col items-center uploads-image mb-4'>
-        {imgMemo(id,src)}
-      </div>
-    )
-  })
+    <div key={id} id={String(id)} className='w-full flex flex-col items-center uploads-image mb-4'>
+      {renderIcon(id,src)}
+    </div>
+  )
+})
 
 const Images = ({ isExpanded, setQuery, images, handleCloseSearch }: Props ) => {
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
