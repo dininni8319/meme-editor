@@ -3,17 +3,18 @@ import { useState, useEffect } from 'react'
 import collapse from '@/assets/collapse.svg'
 import { emojis, shapes, audios } from './assets-imports';
 import NavigationTabs from './navigation-tabs';
-import Shapes from './shapes'
-import Emojis from './emojis'
-import Uploads from './upoads'
-import Images from './images'
-import { access_key, pexels_video } from '@/utils/'
-import Audio from './audio';
-import Text from './text';
-import Video from './video';
-import { NavbarState } from '../../store/navbarSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import { extended } from "../../store/navbarSlice";
+import { 
+  Shapes, 
+  Emojis, 
+  Uploads, 
+  Images, 
+  Audio, 
+  Text, 
+  Video
+} from './index'
+import { access_key, pexels_video, show } from '@/utils'
+import useEvent from '@/hooks/useEvent';
+
 
 const Navbar = () => {
   const [ isExpanded, setIsExpanded ] = useState(false)
@@ -21,30 +22,15 @@ const Navbar = () => {
   const [ images, setImages ] = useState<[]>([])
   const [ videos, setVideos ] = useState<[]>([])
   const [ imageUpload , setImageUpload ] = useState<string[] | []>([]) 
-  const [ error, setError] = useState('')
-  const [ query, setQuery] = useState('')
-  const [ searchVideo, setSearchVideo] = useState('')
   const [ videoUpload, setVideoUpload ] = useState<string[] | []>([])
+  const [ query, setQuery] = useState('')
+  const [ search, setSearch] = useState('')
+  const [ error, setError] = useState('')
   const [ audio, setAudio ] = useState([])
-  
-  // let { nav  } = useSelector<{nav: NavbarState}>((state) => state.nav)
-  // const isExpanded = nav?.isExpanded || false
 
-  // console.log("🚀 ~ file: navbar.tsx:31 ~ Navbar ~ isExpanded:", isExpanded)
-  // const dispatch = useDispatch()
-   
-  const dragElement = (event: DragEvent): void => {
-    const target = event.target as HTMLElement
-    event?.dataTransfer?.setData("id", target.id)
-  }
-
-
+  const { handleFileString } = useEvent()
   const handleCloseSearch = () => setImages([])
   const handleCloseSearchVideo = () => setVideos([])
-  const show = activeTab !== 'uploads' &&
-               activeTab !== 'audio' && 
-               activeTab !== 'text' &&
-               activeTab !== 'video'
 
   const handleTabClick = (tab: string) => {
     if (tab === activeTab) {
@@ -57,17 +43,10 @@ const Navbar = () => {
     }
   }
 
-  const handleFileString = (file: File):string[] => {
-    const arr: string[] = []
-    const fileUrl = URL.createObjectURL(file)
-    arr.push(fileUrl)
-    return arr
-  }
-
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event?.target?.files[0]
-
-    if (file) {
+    const file = event?.target?.files[0] 
+    
+    if (file ) {
       if (file.type.startsWith('image/')) {
         const arrOfFilesToString = handleFileString(file)
         setImageUpload((prev: string[] | []) =>  arrOfFilesToString.concat(prev))
@@ -107,9 +86,9 @@ const Navbar = () => {
   
     useEffect(() => { 
       const fetchVideos = async () => {
-        if (searchVideo.length > 0) {
+        if (search.length > 0) {
           try {
-            const res = await fetch(`https://api.pexels.com/videos/search?query=${searchVideo}`,
+            const res = await fetch(`https://api.pexels.com/videos/search?query=${search}`,
               {
                 method: 'GET',
                 headers: {
@@ -130,7 +109,7 @@ const Navbar = () => {
         }
       }
     fetchVideos()
-  },[searchVideo])
+  },[search])
 
   return (
     <div className='flex w-full'>
@@ -142,15 +121,15 @@ const Navbar = () => {
               <img className='icon-nav' src={collapse} alt="collapse icon"/>
             </button>
           </div>
-          <div className={show ? 'grid grid-cols-4 gap-2 overflow-y-scroll custom-scrollbar h-3/6 relative top-[3%]' : "w-full overflow-y-scroll custom-scrollbar h-3/6"}>
+          <div className={ activeTab && show(activeTab) ? 'grid grid-cols-4 gap-2 overflow-y-scroll custom-scrollbar h-3/6 relative top-[3%]' : "w-full overflow-y-scroll custom-scrollbar h-3/6"}>
              {activeTab === 'objects' && <Shapes isExpanded={isExpanded} shapes={shapes} />}
              {activeTab === 'objects' && <Emojis isExpanded={isExpanded} emojis={emojis} />}
              {activeTab === 'image' && ( 
                 <Images 
-                  isExpanded={isExpanded} 
-                  setQuery={setQuery} 
+                  isExpanded={isExpanded}  
                   images={images} 
                   handleCloseSearch={handleCloseSearch}
+                  setQuery={setQuery}
                 />
               )}
              {activeTab === 'uploads' && (
@@ -161,14 +140,21 @@ const Navbar = () => {
                   videoUpload={videoUpload}
                 />
              )}
-             {activeTab === 'text' && <Text isExpanded={isExpanded} />}
-             {activeTab === 'audio' && <Audio isExpanded={isExpanded} audios={audios} />}
+             {activeTab === 'text' && (
+               <Text isExpanded={isExpanded} />
+             )}
+             {activeTab === 'audio' && (
+                <Audio 
+                  isExpanded={isExpanded} 
+                  audios={audios} 
+                />
+             )}
              {activeTab === 'video' && (
                 <Video 
                   isExpanded={isExpanded} 
-                  setQuery={setSearchVideo} 
                   handleCloseSearch={handleCloseSearchVideo}
                   videos={videos} 
+                  setQuery={setSearch}
                 />
               )}
           </div>

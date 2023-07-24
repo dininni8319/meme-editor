@@ -1,0 +1,7 @@
+export { default as Shapes } from './shapes'
+export { default as Emojis } from './emojis'
+export { default as Uploads } from './upoads'
+export { default as Text } from './text'
+export { default as Video } from './video'
+export { default as Audio } from './audio'
+export { default as Images } from './images'

@@ -1,13 +1,11 @@
-import { useState } from 'react'
 import search from '@/assets/search.svg'
 import { assetVideos } from './assets-imports'
-
 
 interface Props {
   isExpanded: boolean,
   videos: any,
+  handleCloseSearch: () => void,
   setQuery: React.Dispatch<React.SetStateAction<string>>
-  handleCloseSearch: () => void
 }
 
 interface IVideo {
@@ -15,8 +13,7 @@ interface IVideo {
 }
 
 const Video =  ({isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
-
-  const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     if (value.length >= 3) {
       setQuery((prev: string) => prev = value)
@@ -50,7 +47,12 @@ const Video =  ({isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
         </div>
        {isExpanded && assetVideos?.map(({id , src}) => (
             <div key={id} className='w-full flex flex-col items-center uploads-image mb-4'>
-              <video className='ps-10 mt-5 uploads-image' preload="auto" src={src} controls/>
+              <video 
+                className='ps-10 mt-5 uploads-image' 
+                preload="auto" 
+                src={src} 
+                controls
+              />
             </div>
           )
         )}

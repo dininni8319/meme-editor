@@ -1,29 +1,12 @@
-import { useEffect, useRef, FC } from 'react'
+import React, { useState } from 'react'
 import './App.css'
-import { fabric } from 'fabric'
 import Navbar from '@/components/Navbar/navbar'
+import Canvas from '@/components/Canvas/canvas'
+import useEvent from './hooks/useEvent'
 
-const App: FC =  () => {
-  const canvasRef = useRef<fabric.Canvas | null>(null)
-
-  useEffect(() => {
-    const canvas = new fabric.Canvas(canvasRef.current,{
-      width: 500,
-      height: 500,
-      backgroundColor: '#fff'
-    })
-    // add objects to the canvas here
-    const rect = new fabric.Rect({
-      left: 100,
-      top: 100,
-      fill: 'red',
-      width: 20,
-      height: 20
-    })
-    canvas.add(rect)
-  }, [])
-
-
+const App = () => {
+  const { handleDrop } = useEvent()
+  
   return (
     <div className='grid md:grid-cols-6'>
       <Navbar />
@@ -36,7 +19,7 @@ const App: FC =  () => {
 
         </div>
         <div id="canvas_cont">
-          <canvas id="canvas" ref={canvasRef}></canvas>
+         <Canvas onDrop={handleDrop} />
         </div>
       </div>
     </div>

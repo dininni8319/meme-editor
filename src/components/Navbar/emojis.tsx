@@ -1,30 +1,27 @@
-import memoizeOne from 'memoize-one'
+import useEvent from '@/hooks/useEvent'
 
 interface IEmojis {
   id: number,
   src: string
 }
 
-const renderIcon = (id: number, src: string) => {
-  return  (
-    <img 
-      className='mt-5 icon-nav-expand' 
-      src={src} 
-      key={id} 
-      id={String(id)}  
-      loading='lazy'
-      />
-  )
-}
-
 const Emojis = ({isExpanded, emojis}: {isExpanded: boolean, emojis: IEmojis[]}) => {
+  const { handleDragStart } = useEvent()
+
   return (
     <>
       {isExpanded && emojis?.map(({id, src }) => {
-        const svg = memoizeOne(renderIcon)
         return (
           <div key={id}>
-            {svg(id, src)}
+              <img 
+                className='mt-5 icon-nav-expand' 
+                src={src} 
+                key={id} 
+                id={String(id)}  
+                loading='lazy'
+                draggable
+                onDragStart={(e) => handleDragStart(e, src)}
+              />
           </div>
         )
       })}

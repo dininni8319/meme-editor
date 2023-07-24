@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import uploadIcon from '@/assets/upload.svg'
+import useEvent from '@/hooks/useEvent'
 
 interface IProps {
   isExpanded: boolean, 
   imageUpload: string[],
   videoUpload: string[] 
-  handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleFileUpload: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void
 }
 
 const Uploads = (
@@ -15,7 +18,8 @@ const Uploads = (
     const [ initial, setInitial ] = useState(true)
     const isVideos = isActive === 'videos'
     const isImages = isActive === 'images'
-    
+    const { handleDragStart } = useEvent()
+
     const handleTabUpload = (tab: string) => {
       setInitial(false)
       if (tab === isActive) {
@@ -60,7 +64,10 @@ const Uploads = (
       {isExpanded && isImages && imageUpload?.map((image: string, id: number) => {
         return (
           <div key={id} className='w-full flex flex-col items-center uploads-image mb-4'>
-            <img className='ps-10 mt-5 uploads-image' src={image} />
+            <img 
+              className='ps-10 mt-5 uploads-image' 
+              onDragStart={(e) => handleDragStart(e, image)} 
+              src={image} />
           </div>
         )
       })}
