@@ -1,5 +1,6 @@
 import search from '@/assets/search.svg'
 import { assetVideos } from './assets-imports'
+import useEvent from '@/hooks/useEvent'
 
 interface Props {
   isExpanded: boolean,
@@ -19,6 +20,7 @@ const Video =  ({isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
       setQuery((prev: string) => prev = value)
     }
   }
+  const { handleDragStart } = useEvent() 
 
   return (
     <div className={isExpanded ? "w-full" : 'hidden'}>
@@ -52,6 +54,8 @@ const Video =  ({isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
                 preload="auto" 
                 src={src} 
                 controls
+                draggable
+                onDragStart={(e) => handleDragStart(e, src, 'video')}
               />
             </div>
           )

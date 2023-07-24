@@ -40,12 +40,12 @@ export const img = [
 ]
 
 export const texts = [
-      { id: 1, tag: "<h1>Add Text</h1>", fontSize: "40px"},
-      { id: 2, tag: "<h2>Add Text</h2>", fontSize: "35px"},
-      { id: 3, tag: "<h3>Add Text</h3>", fontSize: "30px"},
-      { id: 4, tag: "<h4>Add Text</h4>", fontSize: "25px"},
-      { id: 5, tag: "<h5>Add Text</h5>", fontSize: "20px"},
-      { id: 6, tag: "<h6>Add Text</h6>", fontSize: "15px"}
+      { id: 1, tag: "<h1>Add Text</h1>", fontSize: "40", htmlTag: "h1"},
+      { id: 2, tag: "<h2>Add Text</h2>", fontSize: "35", htmlTag: "h2"},
+      { id: 3, tag: "<h3>Add Text</h3>", fontSize: "30", htmlTag: "h3"},
+      { id: 4, tag: "<h4>Add Text</h4>", fontSize: "25", htmlTag: "h4"},
+      { id: 5, tag: "<h5>Add Text</h5>", fontSize: "20", htmlTag: "h5"},
+      { id: 6, tag: "<h6>Add Text</h6>", fontSize: "15", htmlTag: "h6"}
     ]
 export const emojis = [
   { id: 1, src: "/src/assets/emojis/bomb-emoji.png" },

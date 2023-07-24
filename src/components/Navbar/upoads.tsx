@@ -66,6 +66,7 @@ const Uploads = (
           <div key={id} className='w-full flex flex-col items-center uploads-image mb-4'>
             <img 
               className='ps-10 mt-5 uploads-image' 
+              draggable
               onDragStart={(e) => handleDragStart(e, image)} 
               src={image} />
           </div>
@@ -74,7 +75,13 @@ const Uploads = (
       {isExpanded && isVideos && videoUpload?.map((image: string, id: number) => {
         return (
           <div key={id} className='w-full flex flex-col items-center uploads-image mb-4'>
-            <video className='ps-10 mt-5 uploads-image' src={image} controls/>
+            <video 
+              className='ps-10 mt-5 uploads-image'  
+              src={image} 
+              controls
+              draggable
+              onDragStart={(e) => handleDragStart(e, image)} 
+            />
           </div>
         )
       })}

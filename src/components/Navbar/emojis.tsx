@@ -7,7 +7,6 @@ interface IEmojis {
 
 const Emojis = ({isExpanded, emojis}: {isExpanded: boolean, emojis: IEmojis[]}) => {
   const { handleDragStart } = useEvent()
-
   return (
     <>
       {isExpanded && emojis?.map(({id, src }) => {
@@ -20,7 +19,7 @@ const Emojis = ({isExpanded, emojis}: {isExpanded: boolean, emojis: IEmojis[]}) 
                 id={String(id)}  
                 loading='lazy'
                 draggable
-                onDragStart={(e) => handleDragStart(e, src)}
+                onDragStart={(e) => handleDragStart(e, src, 'emojis')}
               />
           </div>
         )

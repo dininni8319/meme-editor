@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 const useEvent = () => {
   const [images, setImages] = useState([]);
+ 
    // code above and handle drop are not in use for now
    // maybe we will need it later
   const handleDrop = (file: File) => {
@@ -12,10 +13,22 @@ const useEvent = () => {
   }
   
   const handleDragStart = (
-    event: React.DragEvent<HTMLImageElement>, 
-    imageUrl: string
+    event: React.DragEvent<HTMLImageElement | HTMLVideoElement | HTMLDivElement>, 
+    imageUrl: string,
+    im?: string
   ) => {
-    event.dataTransfer.setData('text/plain', imageUrl)
+    if (im === 'video') {
+      event.dataTransfer.setData('video', imageUrl)
+      return
+    } else if (im === 'emojis') {
+      event.dataTransfer.setData('emojis', imageUrl)
+      return
+    }else if (im === 'text') {
+      event.dataTransfer.setData('text', imageUrl)
+      return
+    } else {
+      event.dataTransfer.setData('text/plain', imageUrl)
+    }
   }
   
   const handleDragOver = (

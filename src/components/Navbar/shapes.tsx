@@ -23,7 +23,7 @@ const Shapes = memoizeOne(({ isExpanded, shapes }:IProps) => {
           key={id} 
           id={String(id)}
           draggable
-          onDragStart={(e) => handleDragStart(e, src)}
+          onDragStart={(e) => handleDragStart(e, src, 'emojis')}
         />
       })}
     </>
