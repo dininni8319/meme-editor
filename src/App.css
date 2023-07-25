@@ -5,10 +5,10 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap'); */
 
 body {
-  box-sizing: border-box; 
+  box-sizing: border-box;
   margin: 0px;
   padding: 0px;
-  font-family:'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: #141629;
   color: white;
   width: 100vw;
@@ -26,10 +26,10 @@ body {
   height: 50px;
   padding: 7px;
   border-radius: 5px;
-  background-color: #22233E;
+  background-color: #22233e;
 }
 
-.uploads-image { 
+.uploads-image {
   width: 12rem;
   height: 5rem;
 }
@@ -41,21 +41,21 @@ body {
 }
 
 .text-gray {
-  color: #A0A5D0
+  color: #a0a5d0;
 }
 
 label {
   font-size: 14px;
   font-weight: 500;
-  color: #A0A5D0;
+  color: #a0a5d0;
 }
- 
+
 input {
   outline: none;
   cursor: pointer;
 }
 /* Hide the default file input */
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -68,7 +68,7 @@ input[type="file"] {
   /* Customize scrollbar track */
   scrollbar-track-color: #e2e8f0;
   /* Customize scrollbar thumb */
-  scrollbar-thumb-color: #A0A5D0;
+  scrollbar-thumb-color: #a0a5d0;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -92,7 +92,7 @@ input[type="file"] {
   height: 2rem;
   text-align: center;
   border-radius: 5px;
-  border: 1px solid #A0A5D0;
+  border: 1px solid #a0a5d0;
 }
 
 .audio {

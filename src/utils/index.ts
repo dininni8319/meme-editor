@@ -5,7 +5,7 @@ export const pexels_video = import.meta.env.VITE_SECRET_PEXELS
 export const show = (activeTab: string): boolean => {
   return (
     activeTab !== 'uploads' &&
-    activeTab !== 'audio' && 
+    activeTab !== 'audio' &&
     activeTab !== 'text' &&
     activeTab !== 'video'
   )

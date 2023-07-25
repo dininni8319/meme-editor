@@ -1,22 +1,24 @@
-import React,{ useEffect, useRef, FC, Key } from 'react';
-import { fabric } from 'fabric';
-import useEvent from '@/hooks/useEvent';
+import React, { useEffect, useRef, FC, Key } from 'react'
+import { fabric } from 'fabric'
+import useEvent from '@/hooks/useEvent'
 
-interface    DropZoneProps     {
-       onDrop: (file: File) => void;
+interface DropZoneProps {
+  onDrop: (file: File) => void
 }
 
-const Canvas:FC<DropZoneProps> = ({ onDrop }) => {
-        const canvasRef = useRef<fabric.Canvas | null>(null)
-  const { handleDragOver } = useEvent();
-  
-       useEffect(() =>{
-    if (!canvasRef ||!canvasRef.current){return;}
+const Canvas: FC<DropZoneProps> = ({ onDrop }) => {
+  const canvasRef = useRef<fabric.Canvas | null>(null)
+  const { handleDragOver } = useEvent()
+
+  useEffect(() => {
+    if (!canvasRef || !canvasRef.current) {
+      return
+    }
 
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: 400,
       height: 400,
-      backgroundColor: '#fff'
+      backgroundColor: '#fff',
     })
 
     window.addEventListener('drop', (event: DragEvent) => {
@@ -26,7 +28,7 @@ const Canvas:FC<DropZoneProps> = ({ onDrop }) => {
       const videoEl = document.createElement('video')
       const imageUrl = event.dataTransfer?.getData('text/plain')
       const fontSize = event.dataTransfer?.getData('text')
-      
+
       if (imageUrl) {
         fabric.Image.fromURL(imageUrl, (img) => {
           img.scaleToWidth(400)
@@ -35,24 +37,24 @@ const Canvas:FC<DropZoneProps> = ({ onDrop }) => {
           canvas.add(img)
         })
       }
-      
-      if (emojis) { 
+
+      if (emojis) {
         fabric.Image.fromURL(emojis, (img) => {
           img.scaleToWidth(40)
           img.scaleToHeight(40)
-          img.set({ left: 180 , top: 150})
+          img.set({ left: 180, top: 150 })
           canvas.add(img)
         })
       }
-      
+
       if (fontSize) {
         const text = new fabric.IText('Add text', {
-          left: 50, 
+          left: 50,
           top: 50,
           fontSize: Number(fontSize),
-          fill: 'black'
+          fill: 'black',
         })
-                  
+
         canvas.add(text)
       }
       if (videoUrl) {
@@ -63,60 +65,62 @@ const Canvas:FC<DropZoneProps> = ({ onDrop }) => {
             // height: videoEl.videoHeight,
             left: 50,
             top: 50,
-            fill: 'black'
+            fill: 'black',
           })
           canvas.add(rect)
           canvas.renderOnAddRemove = false
-          
-          const render = () => {
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(rect?.left, rect.top, 400, 400);
-            ctx.drawImage(videoEl, rect.left, rect.top, 400, 400);
-            canvas.requestRenderAll();
-            requestAnimationFrame(render);
-          };
 
-          videoEl.play();
-          render();
-        }         
+          const render = () => {
+            const ctx = canvas.getContext('2d')
+            ctx.clearRect(rect?.left, rect.top, 400, 400)
+            ctx.drawImage(videoEl, rect.left, rect.top, 400, 400)
+            canvas.requestRenderAll()
+            requestAnimationFrame(render)
+          }
+
+          videoEl.play()
+          render()
+        }
       }
     })
 
     window.addEventListener('dragover', (event: DragEvent) => {
       event.preventDefault()
-    });
+    })
 
     const handleKeyDown = (event: any) => {
       // 46 is the key code for the Delete key, 8 for Backspace
       if (event.keyCode === 46 || event.keyCode === 8) {
-        const activeObject = canvas.getActiveObject();
-        if (activeObject && activeObject.type === 'i-text' && activeObject.isEditing) {
-          return;
+        const activeObject = canvas.getActiveObject()
+        if (
+          activeObject &&
+          activeObject.type === 'i-text' &&
+          activeObject.isEditing
+        ) {
+          return
         }
         if (activeObject) {
-          canvas.remove(activeObject);
+          canvas.remove(activeObject)
         }
       }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    },[])
-
-    const downloadCanvasAsImage = () => {
-      const canvas = canvasRef.current
-      if (!canvas) { return; }
-      const link = document.createElement('a')
-      link.download = 'image.png'
-      link.href = canvas.toDataURL()
-      link.click()
     }
+
+    window.addEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const downloadCanvasAsImage = () => {
+    const canvas = canvasRef.current
+    if (!canvas) {
+      return
+    }
+    const link = document.createElement('a')
+    link.download = 'image.png'
+    link.href = canvas.toDataURL()
+    link.click()
+  }
   return (
     <>
-      <canvas 
-        ref={canvasRef}
-        onDragOver={handleDragOver}
-      >
-      </canvas>
+      <canvas ref={canvasRef} onDragOver={handleDragOver}></canvas>
       <button onClick={downloadCanvasAsImage}>Download Canvas</button>
     </>
   )

@@ -3,8 +3,8 @@ import navReducer from './navbarSlice'
 
 const store = configureStore({
   reducer: {
-    nav: navReducer
-  }  
+    nav: navReducer,
+  },
 })
 
 export default store
