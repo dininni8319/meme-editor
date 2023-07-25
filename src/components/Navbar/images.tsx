@@ -27,7 +27,7 @@ const Images = ({ isExpanded, images, setQuery, handleCloseSearch }: Props) => {
           type="text"
           name="query"
           id="query"
-          className="py-4 px-5 bg-[#22233E] text-[#A0A5D0]"
+          className="py-2 px-5 bg-[#22233E] text-[#A0A5D0]"
           placeholder="pixabay"
           onChange={handleChange}
           onClick={handleCloseSearch}

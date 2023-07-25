@@ -1,25 +1,36 @@
-import React, { useEffect, useRef, FC, Key } from 'react'
+import React, { useState, useEffect, useRef, FC, useCallback } from 'react'
 import { fabric } from 'fabric'
 import useEvent from '@/hooks/useEvent'
+import useIsMobile from '@/hooks/useIsMobile'
 
 interface DropZoneProps {
   onDrop: (file: File) => void
 }
 
 const Canvas: FC<DropZoneProps> = ({ onDrop }) => {
-  const canvasRef = useRef<fabric.Canvas | null>(null)
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [ canvasState,  setCanvasState ] = useState(null)
   const { handleDragOver } = useEvent()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
-    if (!canvasRef || !canvasRef.current) {
-      return
-    }
-
     const canvas = new fabric.Canvas(canvasRef.current, {
-      width: 400,
-      height: 400,
+      width: isMobile ? 300 : 400,
+      height: isMobile ? 300: 400,
       backgroundColor: '#fff',
     })
+
+    // Save the canvas instance in the ref so we can access it later
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    canvasRef.current.canvasInstance = canvas;
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const canvas = canvasRef?.current?.canvasInstance;
+    if (!canvasRef || !canvas) {
+      return
+    }
 
     window.addEventListener('drop', (event: DragEvent) => {
       event.preventDefault()
@@ -28,7 +39,7 @@ const Canvas: FC<DropZoneProps> = ({ onDrop }) => {
       const videoEl = document.createElement('video')
       const imageUrl = event.dataTransfer?.getData('text/plain')
       const fontSize = event.dataTransfer?.getData('text')
-
+      
       if (imageUrl) {
         fabric.Image.fromURL(imageUrl, (img) => {
           img.scaleToWidth(400)
@@ -61,8 +72,6 @@ const Canvas: FC<DropZoneProps> = ({ onDrop }) => {
         videoEl.src = videoUrl
         videoEl.onloadedmetadata = () => {
           const rect = new fabric.Rect({
-            // width: videoEl.videoWidth,
-            // height: videoEl.videoHeight,
             left: 50,
             top: 50,
             fill: 'black',
@@ -77,19 +86,20 @@ const Canvas: FC<DropZoneProps> = ({ onDrop }) => {
             canvas.requestRenderAll()
             requestAnimationFrame(render)
           }
-
           videoEl.play()
           render()
         }
       }
     })
 
-    window.addEventListener('dragover', (event: DragEvent) => {
+    window.addEventListener('dragover', (event) => {
       event.preventDefault()
-    })
+    });
 
-    const handleKeyDown = (event: any) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       // 46 is the key code for the Delete key, 8 for Backspace
+      
+      event.preventDefault()
       if (event.keyCode === 46 || event.keyCode === 8) {
         const activeObject = canvas.getActiveObject()
         if (
@@ -106,7 +116,8 @@ const Canvas: FC<DropZoneProps> = ({ onDrop }) => {
     }
 
     window.addEventListener('keydown', handleKeyDown)
-  }, [])
+  
+  }, [canvasState, isMobile, canvasRef])
 
   const downloadCanvasAsImage = () => {
     const canvas = canvasRef.current
@@ -118,10 +129,11 @@ const Canvas: FC<DropZoneProps> = ({ onDrop }) => {
     link.href = canvas.toDataURL()
     link.click()
   }
+
   return (
     <>
       <canvas ref={canvasRef} onDragOver={handleDragOver}></canvas>
-      <button onClick={downloadCanvasAsImage}>Download Canvas</button>
+      <button onClick={downloadCanvasAsImage} className='mt-5 bg-[#22233E] p-3 rounded-md shadow-2xl'>Download Canvas</button>
     </>
   )
 }

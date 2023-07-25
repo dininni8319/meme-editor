@@ -33,7 +33,7 @@ const Uploads = ({
     <div className="w-full">
       {isExpanded && (
         <div className="flex justify-center mt-10 me-5">
-          <label className="bg-blue-500 text-white w-full p-5 first-letter flex justify-center">
+          <label className="bg-blue-500 text-white w-full p-2 first-letter flex justify-center">
             <input
               type="file"
               accept=".jpg,.jpeg,.png,.gif,.mp4,.quicktime,.mpeg"
