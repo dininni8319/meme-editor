@@ -7,7 +7,16 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write ."
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,css,md}": ["npm run format", "git add"]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "@ffmpeg/ffmpeg": "^0.11.6",
@@ -35,7 +44,10 @@
     "eslint": "^8.44.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "postcss": "^8.4.26",
+    "prettier": "^3.0.0",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
     "vite": "^4.3.0"

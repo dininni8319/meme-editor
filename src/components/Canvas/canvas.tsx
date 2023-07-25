@@ -1,17 +1,16 @@
-import React,{ useEffect, useRef, FC } from 'react'
-import { fabric } from 'fabric'
+import React,{ useEffect, useRef, FC, Key } from 'react';
+import { fabric } from 'fabric';
 import useEvent from '@/hooks/useEvent';
-import htmlToCanvas from 'html2canvas'
 
-interface DropZoneProps {
-  onDrop: (file: File) => void;
+interface    DropZoneProps     {
+       onDrop: (file: File) => void;
 }
 
 const Canvas:FC<DropZoneProps> = ({ onDrop }) => {
-  const canvasRef = useRef<fabric.Canvas | null>(null)
-  const { handleDragOver } = useEvent()
+        const canvasRef = useRef<fabric.Canvas | null>(null)
+  const { handleDragOver } = useEvent();
   
-  useEffect(() =>{
+       useEffect(() =>{
     if (!canvasRef ||!canvasRef.current){return;}
 
     const canvas = new fabric.Canvas(canvasRef.current, {
@@ -47,7 +46,7 @@ const Canvas:FC<DropZoneProps> = ({ onDrop }) => {
       }
       
       if (fontSize) {
-        const text = new fabric.Text('Add text', {
+        const text = new fabric.IText('Add text', {
           left: 50, 
           top: 50,
           fontSize: Number(fontSize),
@@ -87,13 +86,39 @@ const Canvas:FC<DropZoneProps> = ({ onDrop }) => {
       event.preventDefault()
     });
 
+    const handleKeyDown = (event: any) => {
+      // 46 is the key code for the Delete key, 8 for Backspace
+      if (event.keyCode === 46 || event.keyCode === 8) {
+        const activeObject = canvas.getActiveObject();
+        if (activeObject && activeObject.type === 'i-text' && activeObject.isEditing) {
+          return;
+        }
+        if (activeObject) {
+          canvas.remove(activeObject);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
     },[])
 
+    const downloadCanvasAsImage = () => {
+      const canvas = canvasRef.current
+      if (!canvas) { return; }
+      const link = document.createElement('a')
+      link.download = 'image.png'
+      link.href = canvas.toDataURL()
+      link.click()
+    }
   return (
-    <canvas 
-      ref={canvasRef}
-      onDragOver={handleDragOver}
-    ></canvas>
+    <>
+      <canvas 
+        ref={canvasRef}
+        onDragOver={handleDragOver}
+      >
+      </canvas>
+      <button onClick={downloadCanvasAsImage}>Download Canvas</button>
+    </>
   )
 }
 
