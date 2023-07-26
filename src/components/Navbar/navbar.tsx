@@ -6,18 +6,21 @@ import NavigationTabs from './navigation-tabs'
 import { Shapes, Emojis, Uploads, Images, Audio, Text, Video } from './index'
 import { access_key, pexels_video, show } from '@/utils'
 import useEvent from '@/hooks/useEvent'
+import { useAppDispatch, useAppSelector } from '@/hooks/dispatch-selector-hooks'
+import { extended } from '@/store/navbarSlice'
 
 const Navbar = () => {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [activeTab, setActiveTab] = useState<string | undefined>('')
+  const { isExpanded, activeTab } = useAppSelector(state => state.nav)
+  const dispatch = useAppDispatch()
   const [images, setImages] = useState<[]>([])
-  const [videos, setVideos] = useState<[]>([])
   const [imageUpload, setImageUpload] = useState<string[] | []>([])
   const [videoUpload, setVideoUpload] = useState<string[] | []>([])
+  const [videos, setVideos] = useState<[]>([])
+  
   const [query, setQuery] = useState('')
+
   const [search, setSearch] = useState('')
   const [error, setError] = useState('')
-  const [audio, setAudio] = useState([])
 
   const { handleFileString } = useEvent()
   const handleCloseSearch = () => setImages([])
@@ -25,11 +28,18 @@ const Navbar = () => {
 
   const handleTabClick = (tab: string) => {
     if (tab === activeTab) {
-      setIsExpanded(false)
-      setActiveTab('')
+      dispatch(
+        extended({
+          isExpanded: false,
+          activeTab: '',
+      }))
+
     } else {
-      setIsExpanded(true)
-      setActiveTab(tab)
+      dispatch(
+        extended({
+          isExpanded: true,
+          activeTab: tab,
+        }))
     }
   }
 
@@ -120,7 +130,11 @@ const Navbar = () => {
             {activeTab}
           </span>
           <button
-            onClick={() => setIsExpanded(false)}
+            onClick={() =>  dispatch(
+              extended({
+                isExpanded: false,
+                activeTab: '',
+            }))}
             className={isExpanded ? 'text-2xl pe-2 pt-3' : 'hidden'}
           >
             <img className="icon-nav" src={collapse} alt="collapse icon" />
@@ -161,6 +175,7 @@ const Navbar = () => {
           )}
           {activeTab === 'video' && (
             <Video
+              query={query}
               isExpanded={isExpanded}
               handleCloseSearch={handleCloseSearchVideo}
               videos={videos}

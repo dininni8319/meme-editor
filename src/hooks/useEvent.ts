@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { fabric } from 'fabric'
 import { v4 as uuidv4 } from 'uuid'
 
-
 const useEvent = () => {
   const [removedObjectIds, setRemovedObjectIds] = useState<Set<string>>(
     new Set()

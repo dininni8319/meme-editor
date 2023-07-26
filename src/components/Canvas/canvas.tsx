@@ -3,8 +3,6 @@ import useEvent from '@/hooks/useEvent'
 import useIsMobile from '@/hooks/useIsMobile'
 import useCanvas from '@/hooks/useCanvas'
 
-
-
 const Canvas = () => {
   const { handleDragOver, handleDropElement, handleKeyDown } = useEvent()
   const isMobile = useIsMobile()

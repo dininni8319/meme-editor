@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import search from '@/assets/search.svg'
 import { assetVideos } from './assets-imports'
 import useEvent from '@/hooks/useEvent'
@@ -5,6 +8,7 @@ import useEvent from '@/hooks/useEvent'
 interface Props {
   isExpanded: boolean
   videos: any
+  query: string
   handleCloseSearch: () => void
   setQuery: React.Dispatch<React.SetStateAction<string>>
 }
@@ -13,11 +17,13 @@ interface IVideo {
   videoFiles: File
 }
 
-const Video = ({ isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
+const Video = ({ isExpanded, videos, query, setQuery, handleCloseSearch }: Props) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
+    console.log("🚀 ~ file: video.tsx:20 ~ handleChange ~ value:", value)
+    
     if (value.length >= 3) {
-      setQuery((prev: string) => (prev = value))
+      setQuery(value)
     }
   }
   const { handleDragStart } = useEvent()
@@ -31,6 +37,7 @@ const Video = ({ isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
             type="text"
             name="query"
             id="query"
+            value={query}
             className="py-3 px-5 bg-[#22233E] text-[#A0A5D0]"
             placeholder="pixabay"
             onClick={handleCloseSearch}
@@ -54,7 +61,7 @@ const Video = ({ isExpanded, videos, setQuery, handleCloseSearch }: Props) => {
                 >
                   <img
                     className="mt-1 ps-5 uploads-image"
-                    src={video.image}
+                    src={video?.image}
                     alt="images from a query"
                     loading="lazy"
                   />
