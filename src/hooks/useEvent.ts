@@ -1,17 +1,13 @@
 import React, { useState } from 'react'
+import { fabric } from 'fabric'
+import { v4 as uuidv4 } from 'uuid'
+
 
 const useEvent = () => {
-  const [images, setImages] = useState([])
-
-  // code above and handle drop are not in use for now
-  // maybe we will need it later
-  const handleDrop = (file: File) => {
-    const imageUrl = URL.createObjectURL(file)
-    if (imageUrl) {
-      setImages((prevImages) => [...prevImages, imageUrl])
-    }
-  }
-
+  const [removedObjectIds, setRemovedObjectIds] = useState<Set<string>>(
+    new Set()
+  )
+  
   const handleDragStart = (
     event: React.DragEvent<
       HTMLImageElement | HTMLVideoElement | HTMLDivElement
@@ -44,11 +40,112 @@ const useEvent = () => {
     return arr
   }
 
+  const handleDropElement = (event: DragEvent, canvas: fabric.Canvas) => {
+    event.preventDefault()
+    const videoUrl = event.dataTransfer?.getData('video')
+    const emojis = event.dataTransfer?.getData('emojis')
+    const videoEl = document.createElement('video')
+    const imageUrl = event.dataTransfer?.getData('text/plain')
+    const fontSize = event.dataTransfer?.getData('text')
+
+    if (imageUrl) {
+      fabric.Image.fromURL(imageUrl, (img) => {
+        img.scaleToWidth(400)
+        img.scaleToHeight(400)
+        img.center()
+        img.id = uuidv4()
+        if (!removedObjectIds.has(img.id)) {
+          canvas.add(img)
+          canvas.requestRenderAll()
+        }
+      })
+    }
+
+    if (emojis) {
+      fabric.Image.fromURL(emojis, (img) => {
+        img.scaleToWidth(40)
+        img.scaleToHeight(40)
+        img.set({ left: 180, top: 150 })
+        img.id = uuidv4()
+
+        if (!removedObjectIds.has(img.id)) {
+          canvas.add(img)
+          canvas.requestRenderAll()
+        }
+
+      })
+    }
+
+    if (fontSize) {
+      const text = new fabric.IText('Add text', {
+        left: 50,
+        top: 50,
+        fontSize: Number(fontSize),
+        fill: 'black',
+      })
+      text.id = uuidv4()
+       if (!removedObjectIds.has(text.id)) {
+         canvas.add(text)
+         canvas.requestRenderAll()
+       }
+    }
+    if (videoUrl) {
+      videoEl.src = videoUrl
+      videoEl.onloadedmetadata = () => {
+        const rect = new fabric.Rect({
+          left: 50,
+          top: 50,
+          fill: 'black',
+        })
+        canvas.add(rect)
+        canvas.renderOnAddRemove = false
+
+        const render = () => {
+          const ctx = canvas.getContext('2d')
+          ctx.clearRect(rect?.left, rect.top, 400, 400)
+          ctx.drawImage(videoEl, rect.left, rect.top, 400, 400)
+          canvas.requestRenderAll()
+          requestAnimationFrame(render)
+        }
+        videoEl.play()
+        render()
+      }
+    }
+  }
+
+    const handleKeyDown = (event: KeyboardEvent, canvas: fabric.Canvas) => {
+      event.preventDefault()
+      const id = uuidv4()
+     
+      if (event.key === 'Backspace') {
+        const activeObject = canvas.getActiveObject()
+        
+        if (
+          activeObject &&
+          activeObject.type === 'i-text' &&
+          activeObject.isEditing
+        ) {
+          return
+        }
+        if (activeObject) {
+          const activeObjects = canvas.getActiveObjects()
+          activeObjects.forEach(object => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            object.id = id
+            setRemovedObjectIds(prevState => new Set(prevState.add(object.id)))
+            canvas.remove(object)
+          })
+          canvas.discardActiveObject().renderAll();
+        }
+      }
+    }
+
   return {
     handleDragStart,
     handleDragOver,
-    handleDrop,
     handleFileString,
+    handleDropElement,
+    handleKeyDown
   }
 }
 

@@ -11,7 +11,10 @@
     "format": "prettier --write ."
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,css,md}": ["npm run format", "git add"]
+    "*.{ts,tsx,js,jsx,json,css,md}": [
+      "npm run format",
+      "git add"
+    ]
   },
   "husky": {
     "hooks": {
@@ -24,6 +27,7 @@
     "@types/dompurify": "^3.0.2",
     "@types/fabric": "^5.3.3",
     "@types/react-redux": "^7.1.25",
+    "@types/uuid": "^9.0.2",
     "dompurify": "^3.0.5",
     "fabric": "^5.3.0",
     "html2canvas": "^1.4.1",
@@ -31,7 +35,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.1",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.4.2",
