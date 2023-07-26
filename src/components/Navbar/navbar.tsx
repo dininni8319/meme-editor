@@ -7,20 +7,16 @@ import { Shapes, Emojis, Uploads, Images, Audio, Text, Video } from './index'
 import { access_key, pexels_video, show } from '@/utils'
 import useEvent from '@/hooks/useEvent'
 import { useAppDispatch, useAppSelector } from '@/hooks/dispatch-selector-hooks'
-import { extended } from '@/store/navbarSlice'
+import { extended, setError } from '@/store/navbarSlice'
 
 const Navbar = () => {
-  const { isExpanded, activeTab } = useAppSelector(state => state.nav)
+  const { isExpanded, activeTab, search, query } = useAppSelector(state => state.nav)
+  
   const dispatch = useAppDispatch()
   const [images, setImages] = useState<[]>([])
   const [imageUpload, setImageUpload] = useState<string[] | []>([])
   const [videoUpload, setVideoUpload] = useState<string[] | []>([])
   const [videos, setVideos] = useState<[]>([])
-  
-  const [query, setQuery] = useState('')
-
-  const [search, setSearch] = useState('')
-  const [error, setError] = useState('')
 
   const { handleFileString } = useEvent()
   const handleCloseSearch = () => setImages([])
@@ -44,7 +40,7 @@ const Navbar = () => {
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event?.target?.files[0]
+    const file = event.target.files[0]
 
     if (file) {
       if (file.type.startsWith('image/')) {
@@ -77,13 +73,13 @@ const Navbar = () => {
         } catch (error) {
           if (error instanceof Error) {
             const message = error.message || 'Something went wrong'
-            setError((prev) => (prev = message))
+            dispatch(setError({error: message}))
           }
         }
       }
     }
     fetchImages()
-  }, [query])
+  }, [query, dispatch])
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -105,7 +101,7 @@ const Navbar = () => {
         } catch (error) {
           if (error instanceof Error) {
             const message = error.message || 'Something went wrong'
-            setError((prev) => (prev = message))
+            dispatch(setError({error: message}))
           }
         }
       }
@@ -155,10 +151,8 @@ const Navbar = () => {
           )}
           {activeTab === 'image' && (
             <Images
-              isExpanded={isExpanded}
               images={images}
               handleCloseSearch={handleCloseSearch}
-              setQuery={setQuery}
             />
           )}
           {activeTab === 'uploads' && (
@@ -175,11 +169,9 @@ const Navbar = () => {
           )}
           {activeTab === 'video' && (
             <Video
-              query={query}
               isExpanded={isExpanded}
               handleCloseSearch={handleCloseSearchVideo}
               videos={videos}
-              setQuery={setSearch}
             />
           )}
         </div>

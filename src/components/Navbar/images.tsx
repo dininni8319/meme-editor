@@ -1,28 +1,31 @@
 import { img } from './assets-imports'
-import search from '@/assets/search.svg'
+import searchSvg from '@/assets/search.svg'
 import SearchAutoComplete from './search-img-auto-com'
 import useEvent from '@/hooks/useEvent'
+import { useAppDispatch, useAppSelector } from '@/hooks/dispatch-selector-hooks'
+import { queryString } from '@/store/navbarSlice'
 
 interface Props {
-  isExpanded: boolean
   images: string[]
   handleCloseSearch: () => void
-  setQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Images = ({ isExpanded, images, setQuery, handleCloseSearch }: Props) => {
+const Images = ({ images, handleCloseSearch }: Props) => {
   const { handleDragStart } = useEvent()
+  const dispatch = useAppDispatch()
+
+  const { isExpanded } = useAppSelector(state => state.nav)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     if (value.length >= 3) {
-      setQuery((prev: string) => (prev = value))
+      dispatch(queryString({query: value}))
     }
   }
   return (
     <div className={isExpanded ? 'w-full' : 'hidden'}>
       <div className="flex items-center bg-[#22233E] mt-5">
-        <img className="icon-nav p-1 me-2" src={search} />
+        <img className="icon-nav p-1 me-2" src={searchSvg} />
         <input
           type="text"
           name="query"
