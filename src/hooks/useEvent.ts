@@ -134,7 +134,8 @@ const useEvent = () => {
             setRemovedObjectIds(prevState => new Set(prevState.add(object.id)))
             canvas.remove(object)
           })
-          canvas.discardActiveObject().renderAll();
+          canvas.discardActiveObject()
+          canvas.renderAll();
         }
       }
     }
