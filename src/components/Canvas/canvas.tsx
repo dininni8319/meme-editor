@@ -1,10 +1,14 @@
-import { useEffect, FC } from 'react'
+import { useEffect } from 'react'
 import useEvent from '@/hooks/useEvent'
 import useIsMobile from '@/hooks/useIsMobile'
 import useCanvas from '@/hooks/useCanvas'
+import { fabric } from 'fabric'
+import { DropTargetMonitor } from 'react-dnd';
+import DraggleItem from './draggleItem'
+import imgSVG from '@/assets/images/image1.avif'
 
 const Canvas = () => {
-  const { handleDragOver, handleDropElement, handleKeyDown } = useEvent()
+  const { handleDragOver, handleDropElement } = useEvent()
   const isMobile = useIsMobile()
   const { canvasElementRef, fabricCanvasRef } = useCanvas(isMobile)
 
@@ -12,21 +16,54 @@ const Canvas = () => {
     const canvas = fabricCanvasRef?.current;
     if (!canvas) return
 
-    window.addEventListener('drop',(event) => handleDropElement(event, canvas))
+    canvas.on('mouse:down', (event) => {
+      if (event.target) {
+        event.target.set({
+          selectable: true,
+          evented: true          
+        })
+      canvas.setActiveObject(event.target)
+      }
+    })
+    // window.addEventListener('drop',(event) => handleDropElement(event, canvas))
 
     window.addEventListener('dragover', (event) => {
       event.preventDefault()
     });
-
-    window.addEventListener('keydown',(event: KeyboardEvent) => handleKeyDown(event, canvas))
+    // window.addEventListener('keydown',(event: KeyboardEvent) => handleKeyDown(event, canvas))
   
   }, [
     canvasElementRef, 
-    fabricCanvasRef, 
-    handleKeyDown, 
+    fabricCanvasRef,  
     handleDragOver, 
     handleDropElement
   ])
+
+  interface DraggableItem {
+  id: string;
+  type: string;
+}
+   const handleDrop = (item: DraggableItem, monitor: DropTargetMonitor) => {
+    const offset = monitor.getSourceClientOffset();
+    const canvas = fabricCanvasRef?.current;
+    if (offset && canvas) {
+      const y = offset.y;
+      const x = offset.x;
+      if (item.type === "text") {
+        const text = new fabric.Text(item.id, {
+          left: x,
+          top: y,
+          fontSize: 20
+        });
+        canvas.add(text);
+      } else if (item.type === "image") {
+        fabric.Image.fromURL(item.id, function(img) {
+          img.set({ left: x, top: y });
+          canvas.add(img);
+        });
+      }
+    }
+  };
 
   const downloadCanvasAsImage = () => {
     const canvas = fabricCanvasRef.current
@@ -41,8 +78,11 @@ const Canvas = () => {
 
   return (
     <>
-      <canvas ref={canvasElementRef} onDragOver={handleDragOver}></canvas>
+      <canvas ref={canvasElementRef} onDrag={handleDrop}></canvas>
       <button onClick={downloadCanvasAsImage} className='mt-5 bg-[#22233E] p-3 rounded-md shadow-2xl'>Download Canvas</button>
+      <DraggleItem type="image" id='image1'>
+       <img src={imgSVG} alt="image" />
+      </DraggleItem>
     </>
   )
 }

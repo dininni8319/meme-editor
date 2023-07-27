@@ -12,6 +12,8 @@ const useCanvas = (isMobile: boolean) => {
       width: isMobile ? 300 : 400,
       height: isMobile ? 300 : 400,
       backgroundColor: '#fff',
+      hoverCursor: 'pointer',
+      selection: true,
     })
     fabricCanvasRef.current = canvas
   }, [isMobile])
