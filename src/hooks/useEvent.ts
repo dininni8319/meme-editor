@@ -41,6 +41,7 @@ const useEvent = () => {
 
   const handleDropElement = (event: DragEvent, canvas: fabric.Canvas) => {
     event.preventDefault()
+
     const videoUrl = event.dataTransfer?.getData('video')
     const emojis = event.dataTransfer?.getData('emojis')
     const videoEl = document.createElement('video')
