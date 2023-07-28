@@ -14,12 +14,12 @@ const Images = ({ images, handleCloseSearch }: Props) => {
   const { handleDragStart } = useEvent()
   const dispatch = useAppDispatch()
 
-  const { isExpanded } = useAppSelector(state => state.nav)
+  const { isExpanded } = useAppSelector((state) => state.nav)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     if (value.length >= 3) {
-      dispatch(queryString({query: value}))
+      dispatch(queryString({ query: value }))
     }
   }
   return (

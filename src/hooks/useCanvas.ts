@@ -1,7 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { fabric } from 'fabric'
 
-
 const useCanvas = (isMobile: boolean) => {
   const canvasElementRef = useRef<HTMLCanvasElement | null>(null)
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null)
@@ -16,7 +15,7 @@ const useCanvas = (isMobile: boolean) => {
     fabricCanvasRef.current = canvas
   }, [isMobile])
 
-return { canvasElementRef, fabricCanvasRef }
+  return { canvasElementRef, fabricCanvasRef }
 }
 
 export default useCanvas

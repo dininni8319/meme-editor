@@ -10,8 +10,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks/dispatch-selector-hooks'
 import { extended, setError } from '@/store/navbarSlice'
 
 const Navbar = () => {
-  const { isExpanded, activeTab, search, query } = useAppSelector(state => state.nav)
-  
+  const { isExpanded, activeTab, search, query } = useAppSelector(
+    (state) => state.nav
+  )
+
   const dispatch = useAppDispatch()
   const [images, setImages] = useState<[]>([])
   const [imageUpload, setImageUpload] = useState<string[] | []>([])
@@ -28,14 +30,15 @@ const Navbar = () => {
         extended({
           isExpanded: false,
           activeTab: '',
-      }))
-
+        })
+      )
     } else {
       dispatch(
         extended({
           isExpanded: true,
           activeTab: tab,
-        }))
+        })
+      )
     }
   }
 
@@ -73,7 +76,7 @@ const Navbar = () => {
         } catch (error) {
           if (error instanceof Error) {
             const message = error.message || 'Something went wrong'
-            dispatch(setError({error: message}))
+            dispatch(setError({ error: message }))
           }
         }
       }
@@ -101,7 +104,7 @@ const Navbar = () => {
         } catch (error) {
           if (error instanceof Error) {
             const message = error.message || 'Something went wrong'
-            dispatch(setError({error: message}))
+            dispatch(setError({ error: message }))
           }
         }
       }
@@ -126,11 +129,14 @@ const Navbar = () => {
             {activeTab}
           </span>
           <button
-            onClick={() =>  dispatch(
-              extended({
-                isExpanded: false,
-                activeTab: '',
-            }))}
+            onClick={() =>
+              dispatch(
+                extended({
+                  isExpanded: false,
+                  activeTab: '',
+                })
+              )
+            }
             className={isExpanded ? 'text-2xl pe-2 pt-3' : 'hidden'}
           >
             <img className="icon-nav" src={collapse} alt="collapse icon" />
@@ -150,10 +156,7 @@ const Navbar = () => {
             <Emojis isExpanded={isExpanded} emojis={emojis} />
           )}
           {activeTab === 'image' && (
-            <Images
-              images={images}
-              handleCloseSearch={handleCloseSearch}
-            />
+            <Images images={images} handleCloseSearch={handleCloseSearch} />
           )}
           {activeTab === 'uploads' && (
             <Uploads

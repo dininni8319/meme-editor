@@ -18,14 +18,14 @@ interface IVideo {
 }
 
 const Video = ({ videos, handleCloseSearch }: Props) => {
-  const { isExpanded, search } = useAppSelector(state => state.nav)
+  const { isExpanded, search } = useAppSelector((state) => state.nav)
   const dispatch = useAppDispatch()
-  
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
 
     if (value.length >= 3) {
-      dispatch(searchString({search: value}))
+      dispatch(searchString({ search: value }))
     }
   }
   const { handleDragStart } = useEvent()
