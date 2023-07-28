@@ -1,4 +1,4 @@
-import { useEffect, FC } from 'react'
+import { useEffect } from 'react'
 import useEvent from '@/hooks/useEvent'
 import useIsMobile from '@/hooks/useIsMobile'
 import useCanvas from '@/hooks/useCanvas'
@@ -7,6 +7,8 @@ const Canvas = () => {
   const { handleDragOver, handleDropElement, handleKeyDown } = useEvent()
   const isMobile = useIsMobile()
   const { canvasElementRef, fabricCanvasRef } = useCanvas(isMobile)
+  console.log("🚀 ~ file: canvas.tsx:10 ~ Canvas ~ fabricCanvasRef:", fabricCanvasRef)
+  console.log("🚀 ~ file: canvas.tsx:10 ~ Canvas ~ canvasElementRef:", canvasElementRef)
 
   useEffect(() => {
     const canvas = fabricCanvasRef?.current;
@@ -39,6 +41,7 @@ const Canvas = () => {
     link.click()
   }
 
+  
   return (
     <>
       <canvas ref={canvasElementRef} onDragOver={handleDragOver}></canvas>
