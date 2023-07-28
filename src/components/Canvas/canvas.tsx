@@ -11,6 +11,8 @@ const Canvas = () => {
   const { handleDragOver, handleDropElement } = useEvent()
   const isMobile = useIsMobile()
   const { canvasElementRef, fabricCanvasRef } = useCanvas(isMobile)
+  console.log("🚀 ~ file: canvas.tsx:10 ~ Canvas ~ fabricCanvasRef:", fabricCanvasRef)
+  console.log("🚀 ~ file: canvas.tsx:10 ~ Canvas ~ canvasElementRef:", canvasElementRef)
 
   useEffect(() => {
     const canvas = fabricCanvasRef?.current;
