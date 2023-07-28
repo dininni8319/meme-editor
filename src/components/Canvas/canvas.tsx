@@ -41,7 +41,6 @@ const Canvas = () => {
     link.click()
   }
 
-  
   return (
     <>
       <canvas ref={canvasElementRef} onDragOver={handleDragOver}></canvas>
