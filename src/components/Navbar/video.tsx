@@ -18,9 +18,10 @@ interface IVideo {
 }
 
 const Video = ({ videos, handleCloseSearch }: Props) => {
-  const { isExpanded, search } = useAppSelector((state) => state.nav)
+  const { isExpanded } = useAppSelector((state) => state.nav)
   const dispatch = useAppDispatch()
 
+  const { handleDragStart } = useEvent()
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
 
@@ -28,7 +29,6 @@ const Video = ({ videos, handleCloseSearch }: Props) => {
       dispatch(searchString({ search: value }))
     }
   }
-  const { handleDragStart } = useEvent()
 
   return (
     <div className={isExpanded ? 'w-full' : 'hidden'}>

@@ -14,7 +14,7 @@ const Images = ({ images, handleCloseSearch }: Props) => {
   const { handleDragStart } = useEvent()
   const dispatch = useAppDispatch()
 
-  const { isExpanded } = useAppSelector((state) => state.nav)
+  const { isExpanded, query } = useAppSelector((state) => state.nav)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -30,6 +30,7 @@ const Images = ({ images, handleCloseSearch }: Props) => {
           type="text"
           name="query"
           id="query"
+          value={query}
           className="py-2 px-5 bg-[#22233E] text-[#A0A5D0]"
           placeholder="pixabay"
           onChange={handleChange}

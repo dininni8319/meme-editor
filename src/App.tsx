@@ -1,6 +1,7 @@
 import './App.css'
 import Navbar from '@/components/Navbar/navbar'
 import Canvas from '@/components/Canvas/canvas'
+import SizeComponent from './components/SizeEditor/SizeComponent'
 
 const App = () => {
   return (
@@ -15,7 +16,9 @@ const App = () => {
           className=" mt-5 md:mt-10 w-full flex flex-col items-center"
         >
           <Canvas />
+          <SizeComponent />
         </div>
+
       </div>
     </div>
   )
