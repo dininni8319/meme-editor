@@ -52,7 +52,7 @@ label {
 
 input {
   outline: none;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 /* Hide the default file input */
 input[type='file'] {

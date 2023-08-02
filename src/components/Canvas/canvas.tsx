@@ -4,12 +4,8 @@ import useIsMobile from '@/hooks/useIsMobile'
 import useCanvas from '@/hooks/useCanvas'
 
 const Canvas = () => {
-  const { 
-    handleDragOver, 
-    handleDropElement, 
-    handleKeyDown, 
-    handleBounderies 
-  } = useEvent()
+  const { handleDragOver, handleDropElement, handleKeyDown, handleBounderies } =
+    useEvent()
   const isMobile = useIsMobile()
   const { canvasElementRef, fabricCanvasRef } = useCanvas(isMobile)
 
@@ -35,16 +31,14 @@ const Canvas = () => {
       event.preventDefault()
     })
 
-    // window.addEventListener('keydown', (event: KeyboardEvent) =>
-    //   handleKeyDown(event, canvas)
-    // )
+    window.addEventListener('keydown', (event: KeyboardEvent) => handleKeyDown(event, canvas))
   }, [
     canvasElementRef,
     fabricCanvasRef,
     handleKeyDown,
     handleDragOver,
     handleDropElement,
-    handleBounderies
+    handleBounderies,
   ])
 
   const downloadCanvasAsImage = () => {

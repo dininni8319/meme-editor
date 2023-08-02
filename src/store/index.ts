@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import navReducer from './navbarSlice'
+import resizeSlice from './resizeSlice'
 
 const store = configureStore({
   reducer: {
     nav: navReducer,
+    resize: resizeSlice
   },
 })
 
