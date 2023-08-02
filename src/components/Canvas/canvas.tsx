@@ -31,9 +31,7 @@ const Canvas = () => {
       event.preventDefault()
     })
 
-    window.addEventListener('keydown', (event: KeyboardEvent) =>
-      handleKeyDown(event, canvas)
-    )
+    window.addEventListener('keydown', (event: KeyboardEvent) => handleKeyDown(event, canvas))
   }, [
     canvasElementRef,
     fabricCanvasRef,

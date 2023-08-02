@@ -18,9 +18,9 @@ const Images = ({ images, handleCloseSearch }: Props) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    if (value.length >= 3) {
+    // if (value.length >= 3) {
       dispatch(queryString({ query: value }))
-    }
+    // }
   }
   return (
     <div className={isExpanded ? 'w-full' : 'hidden'}>

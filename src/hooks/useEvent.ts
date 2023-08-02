@@ -112,7 +112,6 @@ const useEvent = () => {
   }
 
   const handleKeyDown = (event: KeyboardEvent, canvas: fabric.Canvas) => {
-    event.preventDefault()
     const id = uuidv4()
 
     if (event.key === 'Backspace') {
