@@ -163,6 +163,19 @@ const useEvent = () => {
     }
   }
 
+
+  const handleClearCanvas = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    canvas: fabric.Canvas | null
+  ) => {
+    if (canvas) {
+      canvas.clear() // Clears all the objects on the canvas
+      canvas.setBackgroundColor('#fff', canvas.renderAll.bind(canvas))
+      canvas.renderAll()
+    }
+  } 
+
+  
   return {
     handleDragStart,
     handleDragOver,
@@ -170,6 +183,7 @@ const useEvent = () => {
     handleDropElement,
     handleKeyDown,
     handleBounderies,
+    handleClearCanvas,
   }
 }
 

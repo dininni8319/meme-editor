@@ -10,10 +10,12 @@ const useCanvas = (isMobile: boolean) => {
     const canvas = new fabric.Canvas(canvasElementRef.current, {
       width: isMobile ? 300 : 400,
       height: isMobile ? 300 : 400,
-      backgroundColor: '#fff',
       hoverCursor: 'pointer',
       selection: true,
     })
+
+     // Set the background color through Fabric.js
+    canvas.setBackgroundColor("#fff", canvas.renderAll.bind(canvas));
     fabricCanvasRef.current = canvas
   }, [isMobile])
 

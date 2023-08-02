@@ -4,11 +4,17 @@ import useIsMobile from '@/hooks/useIsMobile'
 import useCanvas from '@/hooks/useCanvas'
 
 const Canvas = () => {
-  const { handleDragOver, handleDropElement, handleKeyDown, handleBounderies } =
-    useEvent()
+  const { 
+    handleDragOver,
+    handleDropElement, 
+    handleKeyDown, 
+    handleBounderies,
+    handleClearCanvas
+  } = useEvent()
+
   const isMobile = useIsMobile()
   const { canvasElementRef, fabricCanvasRef } = useCanvas(isMobile)
-
+ 
   useEffect(() => {
     const canvas = fabricCanvasRef?.current
     if (!canvas) return
@@ -54,13 +60,22 @@ const Canvas = () => {
 
   return (
     <>
-      <canvas ref={canvasElementRef} onDragOver={handleDragOver}></canvas>
+      <canvas ref={canvasElementRef} onDragOver={handleDragOver} ></canvas>
       <button
         onClick={downloadCanvasAsImage}
         className="mt-5 bg-[#22233E] p-3 rounded-md shadow-2xl"
+        id='canvas'
       >
         Download Canvas
       </button>
+      <button
+        onClick={(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleClearCanvas(e, fabricCanvasRef?.current)}
+        className="mt-5 bg-[#22233E] p-3 rounded-md shadow-2xl"
+        id='canvas'
+      >
+        Clear Canvas
+      </button>
+
     </>
   )
 }
