@@ -103,7 +103,7 @@ const Uploads = ({
                 src={video}
                 controls
                 draggable
-                onDragStart={(e) => handleDragStart(e, video)}
+                onDragStart={(e) => handleDragStart(e, video, 'video')}
               />
             </div>
           )

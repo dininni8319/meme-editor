@@ -10,3 +10,16 @@ export const show = (activeTab: string): boolean => {
     activeTab !== 'video'
   )
 }
+
+export function getVideoElement(url: string) {
+  const videoE = document.createElement('video')
+  videoE.width = 530
+  videoE.height = 298
+  videoE.muted = true
+  videoE.crossOrigin = 'anonymous'
+  const source = document.createElement('source')
+  source.src = url
+  source.type = 'video/mp4'
+  videoE.appendChild(source)
+  return videoE
+}

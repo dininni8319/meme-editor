@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { fabric } from 'fabric'
 import { v4 as uuidv4 } from 'uuid'
+import { getVideoElement } from '@/utils'
 
 const useEvent = () => {
   const [removedObjectIds, setRemovedObjectIds] = useState<Set<string>>(
@@ -54,7 +55,7 @@ const useEvent = () => {
         img.scaleToHeight(400)
         img.center()
         img.id = uuidv4()
-  
+
         // check for duplicates before adding to the canvas
         if (!removedObjectIds.has(img.id)) {
           canvas.add(img)
@@ -63,8 +64,7 @@ const useEvent = () => {
     }
 
     if (emojis) {
-      console.log("🚀 ~ file: useEvent.ts:66 ~ handleDropElement ~ emojis:", emojis)
-      
+
       fabric.Image.fromURL(emojis, (img) => {
         img.scaleToWidth(40)
         img.scaleToHeight(40)
@@ -90,26 +90,26 @@ const useEvent = () => {
       }
     }
     if (videoUrl) {
-      videoEl.src = videoUrl
-      videoEl.onloadedmetadata = () => {
-        const rect = new fabric.Rect({
-          left: 50,
-          top: 50,
-          fill: 'black',
-        })
-        canvas.add(rect)
-        canvas.renderOnAddRemove = false
-
-        const render = () => {
-          const ctx = canvas.getContext('2d')
-          ctx.clearRect(rect?.left, rect.top, 400, 400)
-          ctx.drawImage(videoEl, rect.left, rect.top, 400, 400)
-          canvas.requestRenderAll()
-          requestAnimationFrame(render)
+        videoEl.src = videoUrl
+        videoEl.onloadedmetadata = () => {
+          const rect = new fabric.Rect({
+            left: 50,
+            top: 50,
+            fill: 'black',
+          })
+          canvas.add(rect)
+          canvas.renderOnAddRemove = false
+  
+          const render = () => {
+            const ctx = canvas.getContext('2d')
+            ctx.clearRect(rect?.left, rect.top, 400, 400)
+            ctx.drawImage(videoEl, rect.left, rect.top, 400, 400)
+            canvas.requestRenderAll()
+            requestAnimationFrame(render)
+          }
+          videoEl.play()
+          render()
         }
-        videoEl.play()
-        render()
-      }
     }
     event.dataTransfer?.clearData()
   }
@@ -164,7 +164,6 @@ const useEvent = () => {
       obj.setCoords()
     }
   }
-
 
   const handleClearCanvas = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
