@@ -19,7 +19,7 @@ const Images = ({ images, handleCloseSearch }: Props) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     // if (value.length >= 3) {
-      dispatch(queryString({ query: value }))
+    dispatch(queryString({ query: value }))
     // }
   }
   return (

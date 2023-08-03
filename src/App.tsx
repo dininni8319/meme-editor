@@ -18,7 +18,6 @@ const App = () => {
           <Canvas />
           <SizeComponent />
         </div>
-
       </div>
     </div>
   )

@@ -4,11 +4,16 @@ import collapse from '@/assets/collapse.svg'
 import { emojis, shapes, audios } from './assets-imports'
 import NavigationTabs from './navigation-tabs'
 import { Shapes, Emojis, Uploads, Images, Audio, Text, Video } from './index'
-import { access_key, pexels_video, show } from '@/utils'
+import { show } from '@/utils'
 import useEvent from '@/hooks/useEvent'
 import { useAppDispatch, useAppSelector } from '@/hooks/dispatch-selector-hooks'
 import { extended, setError } from '@/store/navbarSlice'
-import axios from 'axios'
+import {
+  fetchVideos,
+  fetchImages,
+  uploadVideos,
+  fetchUploadedVideos,
+} from '@/services'
 
 const Navbar = () => {
   const { isExpanded, activeTab, search, query } = useAppSelector(
@@ -50,42 +55,30 @@ const Navbar = () => {
         const arrOfFilesToString = handleFileString(file)
         setImageUpload((prev: string[] | []) => arrOfFilesToString.concat(prev))
       } else if (file.type.startsWith('video/')) {
-        const formData = new FormData()
-        formData.append('file', file)
-
-        axios
-          .post('http://localhost:8000/upload', formData)
-          .then((res) => {
-            res.status === 200 ? alert(res.message || 'File successfully uploaded') : alert("Something went wrong")
-          }).catch((error: unknown) => 
-          {
-            if (error instanceof Error) 
-            {
+        const sendRequest = async () => {
+          try {
+            const video = await uploadVideos(file)
+            return video
+          } catch (error) {
+            if (error instanceof Error) {
               const message = error.message || 'Something went wrong'
               alert(message)
             }
-          })
+          }
+        }
+        sendRequest()
       }
     }
   }
 
   useEffect(() => {
-    const fetchImages = async () => {
-      if (query.length > 0) {
+    const sendRequest = async () => {
+      if (query.length > 2) {
         try {
-          const res = await fetch(
-            `https://api.unsplash.com/search/photos?query=${query}`,
-            {
-              method: 'GET',
-              headers: {
-                Authorization: `Client-ID ${access_key}`,
-              },
-            }
-          )
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const { results: data } = await res.json()
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          setImages((prev) => [...data, ...prev])
+          const result = await fetchImages(query)
+          if (result) {
+            setImages((prev) => [...result, ...prev])
+          }
         } catch (error) {
           if (error instanceof Error) {
             const message = error.message || 'Something went wrong'
@@ -94,26 +87,17 @@ const Navbar = () => {
         }
       }
     }
-    fetchImages()
+    sendRequest()
   }, [query, dispatch])
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      if (search.length > 0) {
+    const sendRequest = async () => {
+      if (search.length > 2) {
         try {
-          const res = await fetch(
-            `https://api.pexels.com/videos/search?query=${search}`,
-            {
-              method: 'GET',
-              headers: {
-                Authorization: pexels_video,
-              },
-            }
-          )
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const { videos: data } = await res.json()
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          setVideos((prev) => [...data, ...prev])
+          const result = await fetchVideos(search)
+          if (result) {
+            setVideos((prev) => [...result, ...prev])
+          }
         } catch (error) {
           if (error instanceof Error) {
             const message = error.message || 'Something went wrong'
@@ -122,21 +106,26 @@ const Navbar = () => {
         }
       }
     }
-    fetchVideos()
+    sendRequest()
   }, [search])
 
   useEffect(() => {
-     axios
-      .get('http://localhost:8000/videos')
-      .then((res) => {
-        res.status === 200 ? setVideoUpload(res.data) : alert("Something went wrong")
-      }).catch((error: unknown) => {
+    const sendRequest = async () => {
+      try {
+        const result = await fetchUploadedVideos()
+        if (result) {
+          setVideoUpload(result)
+        }
+      } catch (error) {
         if (error instanceof Error) {
           const message = error.message || 'Something went wrong'
-          alert(message)
+          dispatch(setError({ error: message }))
         }
-      })
+      }
+    }
+    sendRequest()
   }, [])
+
   return (
     <div className="flex w-full">
       <NavigationTabs handleTabClick={handleTabClick} />

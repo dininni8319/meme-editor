@@ -14,8 +14,8 @@ const useCanvas = (isMobile: boolean) => {
       selection: true,
     })
 
-     // Set the background color through Fabric.js
-    canvas.setBackgroundColor("#fff", canvas.renderAll.bind(canvas));
+    // Set the background color through Fabric.js
+    canvas.setBackgroundColor('#fff', canvas.renderAll.bind(canvas))
     fabricCanvasRef.current = canvas
   }, [isMobile])
 

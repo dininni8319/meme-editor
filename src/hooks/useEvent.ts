@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { fabric } from 'fabric'
 import { v4 as uuidv4 } from 'uuid'
-import { getVideoElement } from '@/utils'
+import { captureFrame } from '@/utils'
 
 const useEvent = () => {
   const [removedObjectIds, setRemovedObjectIds] = useState<Set<string>>(
@@ -40,7 +40,11 @@ const useEvent = () => {
     return arr
   }
 
-  const handleDropElement = (event: DragEvent, canvas: fabric.Canvas) => {
+  const handleDropElement = (
+    event: DragEvent,
+    canvas: fabric.Canvas,
+    frames: any[]
+  ) => {
     event.preventDefault()
 
     const videoUrl = event.dataTransfer?.getData('video')
@@ -48,7 +52,7 @@ const useEvent = () => {
     const videoEl = document.createElement('video')
     const imageUrl = event.dataTransfer?.getData('text/plain')
     const fontSize = event.dataTransfer?.getData('text')
-    
+
     if (imageUrl) {
       fabric.Image.fromURL(imageUrl, (img) => {
         img.scaleToWidth(400)
@@ -64,13 +68,12 @@ const useEvent = () => {
     }
 
     if (emojis) {
-
       fabric.Image.fromURL(emojis, (img) => {
         img.scaleToWidth(40)
         img.scaleToHeight(40)
         img.set({ left: 180, top: 150 })
         img.id = uuidv4()
-       
+
         if (!removedObjectIds.has(img.id)) {
           canvas.add(img)
         }
@@ -90,26 +93,27 @@ const useEvent = () => {
       }
     }
     if (videoUrl) {
-        videoEl.src = videoUrl
-        videoEl.onloadedmetadata = () => {
-          const rect = new fabric.Rect({
-            left: 50,
-            top: 50,
-            fill: 'black',
-          })
-          canvas.add(rect)
-          canvas.renderOnAddRemove = false
-  
-          const render = () => {
-            const ctx = canvas.getContext('2d')
-            ctx.clearRect(rect?.left, rect.top, 400, 400)
-            ctx.drawImage(videoEl, rect.left, rect.top, 400, 400)
-            canvas.requestRenderAll()
-            requestAnimationFrame(render)
-          }
-          videoEl.play()
-          render()
+      videoEl.src = videoUrl
+      videoEl.onloadedmetadata = async () => {
+        const rect = new fabric.Image({
+          left: 50,
+          top: 50,
+          fill: 'black',
+        })
+        canvas.add(rect)
+        canvas.renderOnAddRemove = false
+
+        const render = () => {
+          const ctx = canvas.getContext('2d')
+          ctx.clearRect(rect?.left, rect.top, 400, 400)
+          ctx.drawImage(videoEl, rect.left, rect.top, 400, 400)
+          canvas.requestRenderAll()
+          requestAnimationFrame(render)
         }
+        await videoEl.play()
+        setInterval(() => captureFrame(frames, canvas), 200)
+        render()
+      }
     }
     event.dataTransfer?.clearData()
   }
@@ -174,7 +178,7 @@ const useEvent = () => {
       canvas.setBackgroundColor('#fff', canvas.renderAll.bind(canvas))
       canvas.renderAll()
     }
-  } 
+  }
 
   return {
     handleDragStart,

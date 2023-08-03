@@ -92,7 +92,7 @@ const Uploads = ({
         isVideos &&
         videoUpload?.map((image: string, id: number) => {
           const video = `http://localhost:8000/uploads/${image}`
-          
+
           return (
             <div
               key={id}

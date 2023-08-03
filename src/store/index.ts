@@ -5,7 +5,7 @@ import resizeSlice from './resizeSlice'
 const store = configureStore({
   reducer: {
     nav: navReducer,
-    resize: resizeSlice
+    resize: resizeSlice,
   },
 })
 
