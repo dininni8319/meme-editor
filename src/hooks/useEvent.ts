@@ -47,30 +47,32 @@ const useEvent = () => {
     const videoEl = document.createElement('video')
     const imageUrl = event.dataTransfer?.getData('text/plain')
     const fontSize = event.dataTransfer?.getData('text')
-
+    
     if (imageUrl) {
       fabric.Image.fromURL(imageUrl, (img) => {
         img.scaleToWidth(400)
         img.scaleToHeight(400)
         img.center()
         img.id = uuidv4()
+  
+        // check for duplicates before adding to the canvas
         if (!removedObjectIds.has(img.id)) {
           canvas.add(img)
-          canvas.requestRenderAll()
         }
       })
     }
 
     if (emojis) {
+      console.log("🚀 ~ file: useEvent.ts:66 ~ handleDropElement ~ emojis:", emojis)
+      
       fabric.Image.fromURL(emojis, (img) => {
         img.scaleToWidth(40)
         img.scaleToHeight(40)
         img.set({ left: 180, top: 150 })
         img.id = uuidv4()
-
+       
         if (!removedObjectIds.has(img.id)) {
           canvas.add(img)
-          canvas.requestRenderAll()
         }
       })
     }
@@ -85,7 +87,6 @@ const useEvent = () => {
       text.id = uuidv4()
       if (!removedObjectIds.has(text.id)) {
         canvas.add(text)
-        canvas.requestRenderAll()
       }
     }
     if (videoUrl) {
@@ -110,6 +111,7 @@ const useEvent = () => {
         render()
       }
     }
+    event.dataTransfer?.clearData()
   }
 
   const handleKeyDown = (event: KeyboardEvent, canvas: fabric.Canvas) => {
@@ -175,7 +177,6 @@ const useEvent = () => {
     }
   } 
 
-  
   return {
     handleDragStart,
     handleDragOver,

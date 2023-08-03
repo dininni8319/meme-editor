@@ -91,6 +91,8 @@ const Uploads = ({
       {isExpanded &&
         isVideos &&
         videoUpload?.map((image: string, id: number) => {
+          const video = `http://localhost:8000/uploads/${image}`
+          
           return (
             <div
               key={id}
@@ -98,10 +100,10 @@ const Uploads = ({
             >
               <video
                 className="ps-10 mt-5 uploads-image"
-                src={image}
+                src={video}
                 controls
                 draggable
-                onDragStart={(e) => handleDragStart(e, image)}
+                onDragStart={(e) => handleDragStart(e, video)}
               />
             </div>
           )

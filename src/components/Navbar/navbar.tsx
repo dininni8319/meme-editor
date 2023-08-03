@@ -8,6 +8,7 @@ import { access_key, pexels_video, show } from '@/utils'
 import useEvent from '@/hooks/useEvent'
 import { useAppDispatch, useAppSelector } from '@/hooks/dispatch-selector-hooks'
 import { extended, setError } from '@/store/navbarSlice'
+import axios from 'axios'
 
 const Navbar = () => {
   const { isExpanded, activeTab, search, query } = useAppSelector(
@@ -44,14 +45,26 @@ const Navbar = () => {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0]
-
     if (file) {
       if (file.type.startsWith('image/')) {
         const arrOfFilesToString = handleFileString(file)
         setImageUpload((prev: string[] | []) => arrOfFilesToString.concat(prev))
       } else if (file.type.startsWith('video/')) {
-        const arrOfFilesToString = handleFileString(file)
-        setVideoUpload((prev: string[] | []) => arrOfFilesToString.concat(prev))
+        const formData = new FormData()
+        formData.append('file', file)
+
+        axios
+          .post('http://localhost:8000/upload', formData)
+          .then((res) => {
+            res.status === 200 ? alert(res.message || 'File successfully uploaded') : alert("Something went wrong")
+          }).catch((error: unknown) => 
+          {
+            if (error instanceof Error) 
+            {
+              const message = error.message || 'Something went wrong'
+              alert(message)
+            }
+          })
       }
     }
   }
@@ -112,6 +125,18 @@ const Navbar = () => {
     fetchVideos()
   }, [search])
 
+  useEffect(() => {
+     axios
+      .get('http://localhost:8000/videos')
+      .then((res) => {
+        res.status === 200 ? setVideoUpload(res.data) : alert("Something went wrong")
+      }).catch((error: unknown) => {
+        if (error instanceof Error) {
+          const message = error.message || 'Something went wrong'
+          alert(message)
+        }
+      })
+  }, [])
   return (
     <div className="flex w-full">
       <NavigationTabs handleTabClick={handleTabClick} />
